@@ -1,0 +1,268 @@
+{
+  "as_of": "2026-10-17",
+  "cost_of_funds_pct": 12,
+  "weights": {
+    "cost": 50,
+    "delivery": 15,
+    "terms": 10,
+    "compliance": 10,
+    "completeness": 10,
+    "fit": 5
+  },
+  "need": "5,000",
+  "savings": "₹13,372.88",
+  "suppliers": [
+    {
+      "id": "B",
+      "name": "Om Corrugators",
+      "rank": 1,
+      "quoted_unit": "₹19.50",
+      "gst": "included",
+      "gstin": "07BHKPR2219M1ZX",
+      "moq": null,
+      "lead_days": 7,
+      "valid_until": null,
+      "terms": "Not stated (assumed payment on delivery)",
+      "terms_stated": false,
+      "stated": [
+        true,
+        true,
+        true,
+        false,
+        true,
+        false,
+        false
+      ],
+      "formal_doc": false,
+      "buy_qty": "5,000",
+      "excess_qty": "0",
+      "excess_value": "₹0.00",
+      "goods": "₹82,627.12",
+      "freight": "₹0.00",
+      "subtotal": "₹82,627.12",
+      "gst_amt": "₹14,872.88",
+      "cash": "₹97,500.00",
+      "credit": "₹14,872.88",
+      "effective": "₹82,627.12",
+      "per_unit": "₹16.53",
+      "diff": "₹0.00",
+      "financing": "₹0.00",
+      "advance_amount": "₹0.00",
+      "per_unit_with_financing": "₹16.53",
+      "delivery_date": "2026-10-24",
+      "days_spare": 12,
+      "total_with_financing": "₹82,627.12",
+      "bars": {
+        "goods": 8262712,
+        "goods_need": 8262712,
+        "excess": 0,
+        "freight": 0,
+        "gst_lost": 0,
+        "financing": 0
+      },
+      "price_to_match": null,
+      "price_to_match_free_freight": null,
+      "price_to_match_at_moq": null,
+      "warnings": [],
+      "scores": {
+        "cost": 100,
+        "delivery": 100,
+        "terms": 50,
+        "compliance": 80,
+        "completeness": 57,
+        "fit": 60
+      },
+      "overall": 86.7
+    },
+    {
+      "id": "A",
+      "name": "Shree Balaji Packaging",
+      "rank": 2,
+      "quoted_unit": "₹18.00",
+      "gst": "extra",
+      "gstin": "06AAPFS4721K1ZU",
+      "moq": 2000,
+      "lead_days": 10,
+      "valid_until": "2027-03-31",
+      "terms": "50% advance with PO, balance on delivery",
+      "terms_stated": true,
+      "stated": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "formal_doc": true,
+      "buy_qty": "5,000",
+      "excess_qty": "0",
+      "excess_value": "₹0.00",
+      "goods": "₹90,000.00",
+      "freight": "₹6,000.00",
+      "subtotal": "₹96,000.00",
+      "gst_amt": "₹17,280.00",
+      "cash": "₹1,13,280.00",
+      "credit": "₹17,280.00",
+      "effective": "₹96,000.00",
+      "per_unit": "₹19.20",
+      "diff": "₹13,372.88",
+      "financing": "₹186.21",
+      "advance_amount": "₹56,640.00",
+      "per_unit_with_financing": "₹19.24",
+      "delivery_date": "2026-10-27",
+      "days_spare": 9,
+      "total_with_financing": "₹96,186.21",
+      "bars": {
+        "goods": 9000000,
+        "goods_need": 9000000,
+        "excess": 0,
+        "freight": 600000,
+        "gst_lost": 0,
+        "financing": 18621
+      },
+      "price_to_match": "₹15.32",
+      "price_to_match_free_freight": "₹16.52",
+      "price_to_match_at_moq": null,
+      "warnings": [],
+      "scores": {
+        "cost": 86,
+        "delivery": 70,
+        "terms": 40,
+        "compliance": 100,
+        "completeness": 100,
+        "fit": 60
+      },
+      "overall": 80.5
+    },
+    {
+      "id": "C",
+      "name": "Kanha Paper Products",
+      "rank": 3,
+      "quoted_unit": "₹17.20",
+      "gst": "extra",
+      "gstin": "09AAJCK8834D1Z9",
+      "moq": 10000,
+      "lead_days": 14,
+      "valid_until": "2027-03-31",
+      "terms": "30 days credit from invoice",
+      "terms_stated": true,
+      "stated": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "formal_doc": true,
+      "buy_qty": "10,000",
+      "excess_qty": "5,000",
+      "excess_value": "₹90,500.00",
+      "goods": "₹1,72,000.00",
+      "freight": "₹9,000.00",
+      "subtotal": "₹1,81,000.00",
+      "gst_amt": "₹32,580.00",
+      "cash": "₹2,13,580.00",
+      "credit": "₹32,580.00",
+      "effective": "₹1,81,000.00",
+      "per_unit": "₹36.20",
+      "diff": "₹98,372.88",
+      "financing": "-₹2,106.54",
+      "advance_amount": "₹0.00",
+      "per_unit_with_financing": "₹35.78",
+      "delivery_date": "2026-10-31",
+      "days_spare": 5,
+      "total_with_financing": "₹1,78,893.46",
+      "bars": {
+        "goods": 17200000,
+        "goods_need": 8600000,
+        "excess": 9050000,
+        "freight": 900000,
+        "gst_lost": 0,
+        "financing": -210654
+      },
+      "price_to_match": "₹14.72",
+      "price_to_match_free_freight": "₹16.52",
+      "price_to_match_at_moq": "₹7.36",
+      "warnings": [
+        {
+          "severity": "high",
+          "message": "Minimum order is 10,000 boxes but you need 5,000. You'd buy 5,000 extra worth ₹90,500.00."
+        }
+      ],
+      "scores": {
+        "cost": 46,
+        "delivery": 50,
+        "terms": 100,
+        "compliance": 100,
+        "completeness": 100,
+        "fit": 60
+      },
+      "overall": 63.5
+    }
+  ],
+  "scenario_10k": [
+    {
+      "name": "Om Corrugators",
+      "rank": 1,
+      "per_unit": "₹16.53",
+      "effective": "₹1,65,254.24"
+    },
+    {
+      "name": "Kanha Paper Products",
+      "rank": 2,
+      "per_unit": "₹18.10",
+      "effective": "₹1,81,000.00"
+    },
+    {
+      "name": "Shree Balaji Packaging",
+      "rank": 3,
+      "per_unit": "₹18.60",
+      "effective": "₹1,86,000.00"
+    }
+  ],
+  "required_by": "2026-11-05",
+  "no_gstin": [
+    {
+      "name": "Shree Balaji Packaging",
+      "rank": 1,
+      "per_unit": "₹19.20",
+      "effective": "₹96,000.00"
+    },
+    {
+      "name": "Om Corrugators",
+      "rank": 2,
+      "per_unit": "₹19.50",
+      "effective": "₹97,500.00"
+    },
+    {
+      "name": "Kanha Paper Products",
+      "rank": 3,
+      "per_unit": "₹36.20",
+      "effective": "₹1,81,000.00"
+    }
+  ],
+  "unregistered": [
+    {
+      "name": "Om Corrugators",
+      "rank": 1,
+      "per_unit": "₹19.50",
+      "effective": "₹97,500.00"
+    },
+    {
+      "name": "Shree Balaji Packaging",
+      "rank": 2,
+      "per_unit": "₹22.66",
+      "effective": "₹1,13,280.00"
+    },
+    {
+      "name": "Kanha Paper Products",
+      "rank": 3,
+      "per_unit": "₹42.72",
+      "effective": "₹2,13,580.00"
+    }
+  ]
+}

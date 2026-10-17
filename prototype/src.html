@@ -1,0 +1,802 @@
+<!doctype html>
+<html lang="en-IN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AsliRate prototype</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400..800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#fff;--paper-2:#f5f7fb;--ink:#16202e;--ink-2:#4a5568;--ink-3:#6b7587;
+  --carbon:#2340a0;--carbon-2:#e8edfa;--stamp:#0e7a4b;--stamp-2:#e5f4ec;
+  --amber:#a85a06;--amber-2:#fdf3e3;--danger:#b42318;--danger-2:#fdeceb;
+  --margin-rule:#e6a2b4;--line:#dde2ea;--line-2:#c5ccd8;--r:8px;
+  --font:"Schibsted Grotesk",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.55 var(--font);text-rendering:optimizeLegibility}
+:focus-visible{outline:2px solid var(--carbon);outline-offset:2px}
+a{color:var(--carbon)}
+h1,h2,h3{margin:0;line-height:1.15;letter-spacing:-.015em}
+h1{font-size:2rem;font-weight:750}
+h2{font-size:1.3rem;font-weight:700}
+h3{font-size:1.05rem;font-weight:650}
+p{margin:0}
+.num{font-variant-numeric:lining-nums}
+.muted{color:var(--ink-2)}.faint{color:var(--ink-3)}
+.small{font-size:13.5px}.tiny{font-size:12.5px}
+.wrap{max-width:1080px;margin:0 auto;padding:0 20px}
+.narrow{max-width:640px}
+[hidden]{display:none!important}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* prototype bar */
+.proto{background:var(--ink);color:#fff;font-size:13px}
+.proto .wrap{display:flex;gap:10px;align-items:center;justify-content:space-between;min-height:40px;flex-wrap:wrap;padding-top:6px;padding-bottom:6px}
+.proto select{font:inherit;font-size:13px;padding:3px 6px;border-radius:6px;border:0}
+/* app header */
+.top{border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;height:64px;gap:12px}
+.brand{display:inline-flex;align-items:center;gap:9px;text-decoration:none;color:var(--ink);font-weight:750;font-size:19px}
+.brand i{display:grid;place-items:center;width:30px;height:30px;border:2px solid var(--stamp);border-radius:7px;color:var(--stamp);font-style:normal;font-weight:800;transform:rotate(-6deg);font-size:16px}
+.nav{display:flex;gap:4px;align-items:center}
+.nav a{color:var(--ink-2);text-decoration:none;font-size:14.5px;font-weight:550;padding:7px 10px;border-radius:6px}
+.nav a[aria-current="page"]{color:var(--ink);background:var(--paper-2)}
+.avatar{width:32px;height:32px;border-radius:50%;background:var(--carbon-2);color:var(--carbon);display:grid;place-items:center;font-weight:700;font-size:13px;margin-left:6px}
+@media (max-width:720px){.nav a.hide-sm{display:none}}
+
+main{padding:40px 0 72px}
+.page-head{margin-bottom:28px}
+.page-head p{margin-top:8px;font-size:1.08rem;max-width:62ch}
+
+/* forms */
+label.f{display:block;font-size:14px;font-weight:550;color:var(--ink-2);margin-bottom:6px}
+.inp,select.inp,textarea.inp{width:100%;font:inherit;font-size:15px;color:var(--ink);background:#fff;border:1px solid var(--line-2);border-radius:var(--r);padding:9px 12px;min-height:42px}
+.inp:focus{outline:2px solid rgba(35,64,160,.25);border-color:var(--carbon)}
+.hint{font-size:12.5px;color:var(--ink-3);margin-top:6px}
+.err{font-size:13px;color:var(--danger);font-weight:550;margin-top:6px}
+.inp[aria-invalid="true"]{border-color:var(--danger)}
+.grid{display:grid;gap:20px}
+@media (min-width:640px){.g2{grid-template-columns:1fr 1fr}.g3{grid-template-columns:repeat(3,1fr)}.span2{grid-column:span 2}}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font:inherit;font-weight:650;font-size:15px;border-radius:var(--r);padding:0 20px;min-height:44px;border:1px solid transparent;cursor:pointer;text-decoration:none;white-space:nowrap}
+.btn.primary{background:var(--carbon);color:#fff}.btn.primary:hover{background:#1b3283}
+.btn.outline{background:#fff;color:var(--ink);border-color:var(--line-2)}.btn.outline:hover{background:var(--paper-2)}
+.btn.ghost{background:none;color:var(--ink)}.btn.ghost:hover{background:var(--paper-2)}
+.btn.sm{min-height:34px;padding:0 12px;font-size:14px}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:32px}
+.check{display:flex;gap:10px;align-items:flex-start;font-size:15px}
+.check input{width:18px;height:18px;margin-top:3px;accent-color:var(--carbon)}
+.seg{display:flex;flex-wrap:wrap;gap:8px}
+.seg label{border:1px solid var(--line-2);border-radius:var(--r);padding:10px 14px;cursor:pointer;flex:1 1 150px;font-size:14.5px}
+.seg input{position:absolute;opacity:0}
+.seg label:has(input:checked){border-color:var(--carbon);background:var(--carbon-2);box-shadow:inset 0 0 0 1px var(--carbon)}
+.seg label:has(input:focus-visible){outline:2px solid var(--carbon);outline-offset:2px}
+.seg b{display:block;font-weight:650;color:var(--ink)}
+.seg span{font-size:12.5px;color:var(--ink-2)}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chips label{border:1px solid var(--line-2);border-radius:999px;padding:5px 12px;font-size:14px;cursor:pointer}
+.chips input{position:absolute;opacity:0}
+.chips label:has(input:checked){background:var(--ink);color:#fff;border-color:var(--ink)}
+.panel{border:1px solid var(--line-2);border-radius:10px;background:#fff}
+.panel-h{padding:14px 18px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.panel-b{padding:18px}
+.pill{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:3px 10px;font-size:12.5px;font-weight:650;white-space:nowrap}
+.pill.ok{background:var(--stamp-2);color:var(--stamp)}.pill.warn{background:var(--amber-2);color:var(--amber)}
+.pill.info{background:var(--carbon-2);color:var(--carbon)}.pill.bad{background:var(--danger-2);color:var(--danger)}
+.pill.out{border:1px solid var(--line-2);color:var(--ink-2)}
+
+/* auth */
+.auth{display:grid;gap:48px;align-items:start}
+@media (min-width:900px){.auth{grid-template-columns:1fr 1fr}}
+.auth-aside{background:var(--paper-2);border-radius:12px;padding:28px}
+.auth-aside ol{margin:16px 0 0;padding-left:20px;color:var(--ink-2)}
+.auth-aside li{margin:8px 0}
+.or{display:flex;align-items:center;gap:12px;color:var(--ink-3);font-size:13px;margin:18px 0}
+.or:before,.or:after{content:"";flex:1;height:1px;background:var(--line)}
+
+/* steps */
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:32px;list-style:none;padding:0}
+.steps li .bar{height:4px;border-radius:4px;background:var(--line)}
+.steps li.done .bar,.steps li.now .bar{background:var(--carbon)}
+.steps li>span{display:block;font-size:13px;margin-top:7px;color:var(--ink-3)}
+.steps li.now>span{color:var(--ink);font-weight:650}
+@media (max-width:560px){.steps li span .lbl{display:none}}
+
+/* upload */
+.drop{border:2px dashed var(--line-2);border-radius:12px;padding:28px;text-align:center;background:var(--paper-2)}
+.drop.over{border-color:var(--carbon);background:var(--carbon-2)}
+.formats{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-top:12px}
+.filelist{list-style:none;margin:16px 0 0;padding:0;border:1px solid var(--line-2);border-radius:10px}
+.filelist li{display:flex;align-items:center;gap:14px;padding:13px 16px;border-top:1px solid var(--line)}
+.filelist li:first-child{border-top:0}
+.ftype{width:42px;height:42px;border-radius:8px;display:grid;place-items:center;font-size:11px;font-weight:800;flex:none}
+.ftype.pdf{background:#fdeceb;color:#b42318}.ftype.img{background:#e5f4ec;color:#0e7a4b}.ftype.xls{background:#e7f1ea;color:#1d6b3a}.ftype.doc{background:#e8edfa;color:#2340a0}.ftype.txt{background:var(--paper-2);color:var(--ink-2)}
+.grow{flex:1;min-width:0}
+.trunc{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.spin{width:16px;height:16px;border-radius:50%;border:2px solid var(--line-2);border-top-color:var(--carbon);animation:sp .8s linear infinite;display:inline-block;vertical-align:-3px}
+@keyframes sp{to{transform:rotate(360deg)}}
+
+/* review */
+.rv-grid{display:grid;gap:16px 20px}
+@media (min-width:640px){.rv-grid{grid-template-columns:repeat(2,1fr)}}
+@media (min-width:960px){.rv-grid{grid-template-columns:repeat(3,1fr)}}
+.src{font-size:12.5px;color:var(--ink-3);margin-top:6px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.low{background:var(--amber-2);border-radius:8px;padding:8px;margin:-8px;box-shadow:inset 0 0 0 1px rgba(168,90,6,.35)}
+.low .flag{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:8px;font-size:13px;color:var(--amber);font-weight:650}
+.low .flag button{font:inherit;font-size:12.5px;font-weight:650;color:var(--amber);background:#fff;border:1px solid rgba(168,90,6,.45);border-radius:6px;padding:2px 8px;cursor:pointer}
+.rel{border-top:1px solid var(--line);padding:16px 18px;display:grid;gap:16px}
+@media (min-width:640px){.rel{grid-template-columns:1fr 1fr}}
+
+/* report */
+.verdict{border:2px solid var(--stamp);border-radius:12px;background:#f4faf6;padding:24px;display:grid;gap:20px;position:relative}
+@media (min-width:860px){.verdict{grid-template-columns:1.4fr 1fr}}
+.stamp{display:inline-block;transform:rotate(-4deg);border:2px solid var(--stamp);color:var(--stamp);border-radius:7px;padding:2px 10px;font-size:13px;font-weight:750}
+.verdict h2{font-size:2rem;margin-top:12px}
+.verdict .lead{font-size:1.12rem;margin-top:10px;max-width:56ch}
+.kv{display:grid;grid-template-columns:auto auto;gap:6px 18px;align-content:start;font-size:15px}
+.kv dt{color:var(--ink-2)}.kv dd{margin:0;text-align:right;font-weight:650}
+.sec{margin-top:52px}
+.sec>h2{margin-bottom:6px}
+.sec>.intro{color:var(--ink-2);max-width:68ch;margin-bottom:18px}
+.tbl-wrap{overflow-x:auto;border:1px solid var(--line-2);border-radius:10px}
+table{border-collapse:collapse;width:100%;font-size:14.5px}
+th{font-size:12.5px;font-weight:600;color:var(--ink-3);text-align:left;background:var(--paper-2);padding:10px 12px;white-space:nowrap}
+td{padding:12px;border-top:1px solid var(--line);vertical-align:top}
+td.r,th.r{text-align:right}
+td.r{white-space:nowrap}
+tr.best td{background:#f4faf6}
+.rk{font-size:18px;font-weight:700;color:var(--ink-3)}
+.best-txt{color:var(--stamp)}
+.cards-sm{display:none}
+@media (max-width:760px){.tbl-wrap.cmp{display:none}.cards-sm{display:grid;gap:12px}}
+.card-sm{border:1px solid var(--line-2);border-radius:10px;padding:14px 16px}
+.card-sm.best{background:#f4faf6;border-color:#9fd2b7}
+.card-sm dl{display:grid;grid-template-columns:1fr 1fr;gap:8px 14px;margin:12px 0 0}
+.card-sm dt{font-size:12px;color:var(--ink-3)}.card-sm dd{margin:0;font-weight:600}
+/* bars */
+.bars{display:grid;gap:16px}
+.bar-row{display:grid;gap:6px}
+@media (min-width:700px){.bar-row{grid-template-columns:200px 1fr 170px;align-items:center;gap:14px}}
+.bar-track{display:flex;height:26px;border-radius:5px;overflow:hidden;background:var(--paper-2)}
+.bar-track span{height:100%}
+.legend{display:flex;flex-wrap:wrap;gap:14px;font-size:13px;color:var(--ink-2);margin-top:14px}
+.legend i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+.c-goods{background:#2340a0}.c-freight{background:#7d93d6}.c-gst{background:#b42318}.c-fin{background:#a85a06}
+.c-goods-p{background:repeating-linear-gradient(45deg,#2340a0 0 4px,#4e66b8 4px 8px)}
+/* scorecard */
+.score-tbl td.sc{text-align:center;font-weight:650}
+.sc-cell{display:inline-block;min-width:44px;padding:3px 8px;border-radius:6px}
+.s-hi{background:var(--stamp-2);color:var(--stamp)}.s-mid{background:var(--amber-2);color:var(--amber)}.s-lo{background:var(--danger-2);color:var(--danger)}
+.why{display:block;font-size:12px;color:var(--ink-3);font-weight:400;margin-top:4px;max-width:22ch;margin-inline:auto;line-height:1.35}
+.weights{display:grid;gap:12px;margin-top:18px}
+@media (min-width:700px){.weights{grid-template-columns:repeat(3,1fr)}}
+.weights label{font-size:13.5px;color:var(--ink-2);display:flex;justify-content:space-between}
+.weights input{width:100%;accent-color:var(--carbon)}
+.two{display:grid;gap:16px}
+@media (min-width:760px){.two{grid-template-columns:1fr 1fr}}
+.three{display:grid;gap:16px}
+@media (min-width:860px){.three{grid-template-columns:repeat(3,1fr)}}
+.box{border:1px solid var(--line-2);border-radius:10px;padding:18px}
+.box h3{margin-bottom:8px}
+.mini{list-style:none;padding:0;margin:10px 0 0;font-size:14.5px}
+.mini li{display:flex;justify-content:space-between;gap:10px;padding:6px 0;border-top:1px solid var(--line)}
+.mini li:first-child{border-top:0}
+.risk{list-style:none;padding:0;margin:0;display:grid;gap:10px}
+.risk li{display:flex;gap:12px;align-items:flex-start;max-width:78ch}
+.dot{flex:none;width:10px;height:10px;border-radius:50%;margin-top:7px}
+.dot.high{background:var(--danger)}.dot.medium{background:var(--amber)}.dot.info{background:var(--ink-3)}
+details.work{margin-top:10px}
+details.work summary{cursor:pointer;color:var(--carbon);font-weight:650;font-size:13.5px}
+.workdl{display:grid;grid-template-columns:1fr auto;gap:4px 16px;font-size:13.5px;margin-top:8px;max-width:440px}
+.workdl dd{margin:0;text-align:right}
+.method{columns:2 320px;column-gap:32px;color:var(--ink-2);font-size:14.5px}
+.method p{break-inside:avoid;margin-bottom:12px}
+.toolbar{display:flex;gap:8px;flex-wrap:wrap}
+.dash-row{display:flex;gap:16px;align-items:center;padding:16px 18px;border-top:1px solid var(--line);flex-wrap:wrap}
+.dash-row:first-child{border-top:0}
+footer{border-top:1px solid var(--line);color:var(--ink-3);font-size:13px}
+footer .wrap{padding-top:22px;padding-bottom:22px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+@media (prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+@media print{.proto,.top,footer,.no-print{display:none!important}main{padding:0}.sec{break-inside:avoid}}
+</style>
+</head>
+<body>
+
+<div class="proto no-print">
+  <div class="wrap">
+    <span>Clickable prototype with sample data. Nothing is saved or sent.</span>
+    <label>Jump to
+      <select id="jump" aria-label="Jump to page">
+        <option value="signup">1. Sign up</option>
+        <option value="company">2. Company details</option>
+        <option value="dashboard">3. Dashboard</option>
+        <option value="new">4. New comparison</option>
+        <option value="upload">5. Upload quotes</option>
+        <option value="reading">6. Reading quotes</option>
+        <option value="review">7. Review numbers</option>
+        <option value="report">8. Analysis report</option>
+      </select>
+    </label>
+  </div>
+</div>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#dashboard"><i aria-hidden="true">₹</i>AsliRate</a>
+    <nav class="nav" id="appnav" aria-label="Main">
+      <a href="#dashboard" data-nav="dashboard">Comparisons</a>
+      <a href="#new" data-nav="new" class="hide-sm">New comparison</a>
+      <a href="#company" data-nav="company" class="hide-sm">Company</a>
+      <span class="avatar" aria-label="Signed in as Raghav">RS</span>
+    </nav>
+    <nav class="nav" id="authnav" aria-label="Account" hidden>
+      <span class="faint small">Already have an account?</span>
+      <a href="#dashboard">Log in</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+<div class="wrap">
+
+<!-- 1. SIGN UP -->
+<section data-page="signup" aria-labelledby="h-signup">
+  <div class="auth">
+    <div>
+      <div class="page-head">
+        <h1 id="h-signup" tabindex="-1">Create your AsliRate account</h1>
+        <p class="muted">Free during beta. Compare up to 6 supplier quotes at a time.</p>
+      </div>
+      <button class="btn outline" style="width:100%" type="button" data-go="company">Continue with Google</button>
+      <div class="or">or sign up with email</div>
+      <form id="f-signup" novalidate class="grid">
+        <div class="grid g2">
+          <div><label class="f" for="su-name">Your name</label><input class="inp" id="su-name" autocomplete="name" value="Raghav Saxena" required></div>
+          <div><label class="f" for="su-phone">Mobile (optional)</label><input class="inp" id="su-phone" inputmode="tel" autocomplete="tel" placeholder="98XXX XXXXX"></div>
+        </div>
+        <div><label class="f" for="su-email">Work email</label><input class="inp" id="su-email" type="email" autocomplete="email" value="raghav@ghargoods.example" required></div>
+        <div><label class="f" for="su-company">Company name</label><input class="inp" id="su-company" autocomplete="organization" value="Ghar Goods Pvt. Ltd." required></div>
+        <div><label class="f" for="su-pass">Password</label><input class="inp" id="su-pass" type="password" autocomplete="new-password" value="demo-password" minlength="8" required><p class="hint">At least 8 characters.</p></div>
+        <label class="check"><input type="checkbox" id="su-terms" checked required> <span>I agree to the <a href="#signup">terms</a> and <a href="#signup">privacy policy</a>.</span></label>
+        <p class="err" id="su-err" hidden></p>
+        <div><button class="btn primary" type="submit">Create account</button></div>
+      </form>
+    </div>
+    <aside class="auth-aside">
+      <h2>What happens next</h2>
+      <ol>
+        <li>Tell us about your company, so GST credit is counted correctly.</li>
+        <li>Describe what you're buying and upload 2 to 6 quotes in any format.</li>
+        <li>Check the numbers we read, then get a report on which supplier is really cheapest, and why.</li>
+      </ol>
+      <p class="small faint" style="margin-top:20px">Your quotes are stored privately and are never shared with suppliers or used to train AI models.</p>
+    </aside>
+  </div>
+</section>
+
+<!-- 2. COMPANY -->
+<section data-page="company" aria-labelledby="h-company" hidden>
+  <div class="narrow">
+    <div class="page-head">
+      <h1 id="h-company" tabindex="-1">About your company</h1>
+      <p class="muted">These details change the maths: GST credit depends on your registration, and the value of credit terms depends on what money costs you.</p>
+    </div>
+    <form id="f-company" novalidate class="grid">
+      <div><label class="f" for="co-name">Company name</label><input class="inp" id="co-name" value="Ghar Goods Pvt. Ltd."></div>
+      <div>
+        <label class="f" for="co-gstin">GSTIN</label>
+        <input class="inp num" id="co-gstin" maxlength="15" value="06AAGCG5521R1ZK" style="text-transform:uppercase">
+        <p class="hint" id="co-gstin-hint">Registered in Haryana. GST on proper tax invoices will be counted as input tax credit.</p>
+      </div>
+      <label class="check"><input type="checkbox" id="co-nogst"> <span>We're not GST-registered</span></label>
+      <div class="grid g2">
+        <div><label class="f" for="co-type">Business type</label>
+          <select class="inp" id="co-type"><option>D2C brand</option><option>Manufacturer</option><option>Trader or distributor</option><option>Restaurant or café</option><option>Other</option></select></div>
+        <div><label class="f" for="co-city">City</label><input class="inp" id="co-city" value="Gurugram"></div>
+      </div>
+      <fieldset style="border:0;padding:0;margin:0">
+        <legend class="f">What do you usually buy?</legend>
+        <div class="chips">
+          <label><input type="checkbox" checked>Packaging</label><label><input type="checkbox">Raw materials</label><label><input type="checkbox" checked>Labels and printing</label>
+          <label><input type="checkbox">Components</label><label><input type="checkbox">Finished goods</label><label><input type="checkbox">Services</label>
+        </div>
+      </fieldset>
+      <div>
+        <label class="f" for="co-cof">What does money cost you? (% a year)</label>
+        <input class="inp num" id="co-cof" inputmode="decimal" value="12" style="max-width:140px">
+        <p class="hint">Your loan or overdraft rate. Used to value advance payments and credit days. If unsure, 12% is a sensible default.</p>
+      </div>
+      <fieldset style="border:0;padding:0;margin:0">
+        <legend class="f">What matters most when choosing a supplier?</legend>
+        <div class="seg">
+          <label><input type="radio" name="pri" value="cost"><b>Lowest cost</b><span>Price decides almost everything</span></label>
+          <label><input type="radio" name="pri" value="balanced" checked><b>Balanced</b><span>Cost first, then delivery and terms</span></label>
+          <label><input type="radio" name="pri" value="speed"><b>Fast delivery</b><span>Speed matters as much as price</span></label>
+        </div>
+        <p class="hint">You can change this for each comparison.</p>
+      </fieldset>
+      <div class="actions" style="margin-top:8px"><button class="btn primary" type="submit">Save and continue</button></div>
+    </form>
+  </div>
+</section>
+
+<!-- 3. DASHBOARD -->
+<section data-page="dashboard" aria-labelledby="h-dash" hidden>
+  <div class="page-head" style="display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap">
+    <div><h1 id="h-dash" tabindex="-1">Comparisons</h1><p class="muted">Ghar Goods Pvt. Ltd., GST-registered in Haryana</p></div>
+    <a class="btn primary" href="#new">New comparison</a>
+  </div>
+  <div class="panel">
+    <div class="dash-row">
+      <div class="grow">
+        <a href="#report" style="font-weight:650;color:var(--ink);text-decoration:none">Shipping boxes, 3-ply, 12 × 10 × 8 in</a>
+        <p class="small faint">5,000 boxes, 3 quotes, 17 Oct 2026</p>
+      </div>
+      <span class="pill ok">Om Corrugators, ₹16.53 a box</span>
+      <a class="btn outline sm" href="#report">Open report</a>
+    </div>
+    <div class="dash-row">
+      <div class="grow">
+        <span style="font-weight:650">Product labels, 50 × 80 mm, matte</span>
+        <p class="small faint">20,000 labels, 2 quotes uploaded, draft</p>
+      </div>
+      <span class="pill warn">Numbers to check</span>
+      <a class="btn outline sm" href="#review">Continue</a>
+    </div>
+  </div>
+  <p class="small faint" style="margin-top:14px">The second row is illustrative; only the shipping boxes comparison is clickable end to end.</p>
+</section>
+
+<!-- 4. NEW COMPARISON -->
+<section data-page="new" aria-labelledby="h-new" hidden>
+  <ol class="steps" aria-label="Progress">
+    <li class="now"><div class="bar"></div><span>1<span class="lbl">. What you're buying</span></span></li>
+    <li><div class="bar"></div><span>2<span class="lbl">. Upload quotes</span></span></li>
+    <li><div class="bar"></div><span>3<span class="lbl">. Check numbers</span></span></li>
+    <li><div class="bar"></div><span>4<span class="lbl">. Report</span></span></li>
+  </ol>
+  <div class="narrow">
+    <div class="page-head"><h1 id="h-new" tabindex="-1">What are you buying?</h1><p class="muted">The more specific you are, the better we can spot quotes that aren't for the same thing.</p></div>
+    <form id="f-new" novalidate class="grid">
+      <div><label class="f" for="n-item">Item</label><input class="inp" id="n-item" value="Shipping box, 3-ply corrugated" required><p class="err" hidden></p></div>
+      <div><label class="f" for="n-spec">Specification</label><textarea class="inp" id="n-spec" rows="2">12 × 10 × 8 in, brown kraft, 150 GSM, no printing</textarea><p class="hint">Size, material, grade, finish. We compare each quote against this.</p></div>
+      <div class="grid g3">
+        <div><label class="f" for="n-qty">Quantity</label><input class="inp num" id="n-qty" inputmode="decimal" value="5000" required><p class="err" hidden></p></div>
+        <div><label class="f" for="n-unit">Unit</label><input class="inp" id="n-unit" value="boxes" required><p class="err" hidden></p></div>
+        <div><label class="f" for="n-by">Needed by</label><input class="inp" id="n-by" type="date" value="2026-11-05"></div>
+      </div>
+      <div><label class="f" for="n-to">Deliver to</label><input class="inp" id="n-to" value="Udyog Vihar Phase IV, Gurugram"></div>
+      <fieldset style="border:0;padding:0;margin:0">
+        <legend class="f">Priorities for this purchase</legend>
+        <div class="seg">
+          <label><input type="radio" name="npri" value="cost"><b>Lowest cost</b><span>Cost 70%, others 30%</span></label>
+          <label><input type="radio" name="npri" value="balanced" checked><b>Balanced</b><span>Cost 50%, delivery 15%, terms and trust 35%</span></label>
+          <label><input type="radio" name="npri" value="speed"><b>Fast delivery</b><span>Cost 40%, delivery 35%</span></label>
+        </div>
+      </fieldset>
+      <fieldset style="border:0;padding:0;margin:0" class="grid">
+        <legend class="f">Must-haves</legend>
+        <label class="check"><input type="checkbox" checked> <span>Supplier must give a GST tax invoice</span></label>
+        <label class="check"><input type="checkbox" checked> <span>Delivery by the needed-by date</span></label>
+      </fieldset>
+      <div class="actions" style="margin-top:8px"><button class="btn primary" type="submit">Continue to upload</button><a class="btn ghost" href="#dashboard">Cancel</a></div>
+    </form>
+  </div>
+</section>
+
+<!-- 5. UPLOAD -->
+<section data-page="upload" aria-labelledby="h-up" hidden>
+  <ol class="steps" aria-label="Progress">
+    <li class="done"><div class="bar"></div><span>1<span class="lbl">. What you're buying</span></span></li>
+    <li class="now"><div class="bar"></div><span>2<span class="lbl">. Upload quotes</span></span></li>
+    <li><div class="bar"></div><span>3<span class="lbl">. Check numbers</span></span></li>
+    <li><div class="bar"></div><span>4<span class="lbl">. Report</span></span></li>
+  </ol>
+  <div class="page-head"><h1 id="h-up" tabindex="-1">Upload the quotes</h1><p class="muted">One file per supplier, in whatever form they sent it. Between 2 and 6 suppliers.</p></div>
+  <div style="max-width:760px">
+    <div class="drop" id="drop">
+      <p style="font-weight:650;font-size:17px">Drop files here, or <label for="file-in" style="color:var(--carbon);text-decoration:underline;cursor:pointer">choose files</label></p>
+      <input type="file" id="file-in" multiple class="sr" accept=".pdf,.doc,.docx,.xls,.xlsx,.csv,.jpg,.jpeg,.png,.heic,.webp,.txt,.eml">
+      <div class="formats" aria-label="Accepted formats">
+        <span class="pill out">PDF</span><span class="pill out">Word</span><span class="pill out">Excel / CSV</span><span class="pill out">Photos and screenshots</span><span class="pill out">Email</span>
+      </div>
+      <p class="tiny faint" style="margin-top:10px">Up to 20 MB per file. WhatsApp screenshots and phone photos of printed quotes work.</p>
+    </div>
+    <ul class="filelist" id="filelist" aria-label="Uploaded quotes"></ul>
+    <details style="margin-top:16px">
+      <summary style="cursor:pointer;font-weight:650;color:var(--carbon)">Paste a quote as text instead</summary>
+      <div style="margin-top:10px"><label class="f" for="paste">Quote text</label><textarea class="inp" id="paste" rows="4" placeholder="Paste a WhatsApp message or email here"></textarea>
+      <button class="btn outline sm" type="button" id="add-paste" style="margin-top:10px">Add as a quote</button></div>
+    </details>
+    <p class="err" id="up-err" hidden></p>
+    <div class="actions"><button class="btn primary" type="button" id="read-btn">Read the quotes</button><a class="btn ghost" href="#new">Back</a></div>
+  </div>
+</section>
+
+<!-- 6. READING -->
+<section data-page="reading" aria-labelledby="h-read" hidden>
+  <ol class="steps" aria-label="Progress">
+    <li class="done"><div class="bar"></div><span>1<span class="lbl">. What you're buying</span></span></li>
+    <li class="now"><div class="bar"></div><span>2<span class="lbl">. Upload quotes</span></span></li>
+    <li><div class="bar"></div><span>3<span class="lbl">. Check numbers</span></span></li>
+    <li><div class="bar"></div><span>4<span class="lbl">. Report</span></span></li>
+  </ol>
+  <div class="page-head"><h1 id="h-read" tabindex="-1">Reading your quotes</h1><p class="muted">AI reads each quote into the same set of fields and notes where each number came from. It doesn't calculate anything.</p></div>
+  <ul class="filelist" id="readlist" style="max-width:760px" aria-live="polite"></ul>
+  <div class="actions"><button class="btn primary" type="button" id="to-review" disabled>Check the numbers</button></div>
+</section>
+
+<!-- 7. REVIEW -->
+<section data-page="review" aria-labelledby="h-rev" hidden>
+  <ol class="steps" aria-label="Progress">
+    <li class="done"><div class="bar"></div><span>1<span class="lbl">. What you're buying</span></span></li>
+    <li class="done"><div class="bar"></div><span>2<span class="lbl">. Upload quotes</span></span></li>
+    <li class="now"><div class="bar"></div><span>3<span class="lbl">. Check numbers</span></span></li>
+    <li><div class="bar"></div><span>4<span class="lbl">. Report</span></span></li>
+  </ol>
+  <div class="page-head"><h1 id="h-rev" tabindex="-1">Check the numbers</h1><p class="muted">Here's what we read from each quote and the text it came from. The report uses exactly what you confirm here.</p></div>
+  <p id="rv-banner" class="pill warn" style="padding:10px 14px;border-radius:8px;font-size:14.5px;white-space:normal;margin-bottom:20px"></p>
+  <div id="rv-cards" class="grid" style="gap:20px"></div>
+  <div class="actions"><a class="btn primary" href="#report" id="rv-go">Create the report</a><a class="btn ghost" href="#upload">Back</a></div>
+</section>
+
+<!-- 8. REPORT -->
+<section data-page="report" aria-labelledby="h-rep" hidden>
+  <div class="page-head" style="display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;align-items:flex-end">
+    <div>
+      <p class="small faint">Analysis report, 17 Oct 2026</p>
+      <h1 id="h-rep" tabindex="-1">Shipping boxes: 5,000 × 3-ply, 12 × 10 × 8 in</h1>
+      <p class="muted small" style="margin-top:6px">3 quotes. Ghar Goods Pvt. Ltd., GST-registered. Needed by 5 Nov 2026, delivered to Gurugram.</p>
+    </div>
+    <div class="toolbar no-print">
+      <button class="btn outline sm" type="button" onclick="window.print()">Download PDF</button>
+      <button class="btn outline sm" type="button" id="xls-btn">Download Excel</button>
+      <button class="btn outline sm" type="button" id="share-btn">Copy share link</button>
+    </div>
+  </div>
+  <p id="share-msg" class="small" role="status" style="color:var(--stamp)" hidden></p>
+
+  <div class="verdict" id="verdict"></div>
+
+  <section class="sec" aria-labelledby="h-cmp">
+    <h2 id="h-cmp">How the quotes compare</h2>
+    <p class="intro">"Real cost" is what the order costs you after GST you can claim back. It includes freight, extra stock forced by minimum orders, and the cost of paying early or late.</p>
+    <div class="tbl-wrap cmp"><table id="cmp-table"></table></div>
+    <div class="cards-sm" id="cmp-cards"></div>
+  </section>
+
+  <section class="sec" aria-labelledby="h-bars">
+    <h2 id="h-bars">Where the money goes</h2>
+    <p class="intro">Everything you pay each supplier, excluding the GST you can claim back. Hatched blue is stock you'd buy beyond the 5,000 you need.</p>
+    <div class="bars" id="bars"></div>
+    <div class="legend"><span><i class="c-goods"></i>Boxes you need</span><span><i class="c-goods-p"></i>Extra boxes (minimum order)</span><span><i class="c-freight"></i>Freight</span><span><i class="c-gst"></i>GST you can't claim</span><span><i class="c-fin"></i>Cost of paying in advance</span></div>
+  </section>
+
+  <section class="sec" aria-labelledby="h-score">
+    <h2 id="h-score">Scorecard: beyond price</h2>
+    <p class="intro">Each supplier is scored 0 to 100 on six criteria by fixed rules, then weighted by your priorities. Move the sliders to see whether your choice holds up.</p>
+    <div class="tbl-wrap"><table class="score-tbl" id="score-table"></table></div>
+    <div class="weights" id="weights"></div>
+  </section>
+
+  <section class="sec" aria-labelledby="h-neg">
+    <h2 id="h-neg">What would change the answer</h2>
+    <p class="intro">Use these when you go back to suppliers. Every figure is calculated, not estimated.</p>
+    <div class="three" id="scenarios"></div>
+  </section>
+
+  <section class="sec" aria-labelledby="h-risk">
+    <h2 id="h-risk">Check before you order</h2>
+    <ul class="risk" id="risks" style="margin-top:14px"></ul>
+  </section>
+
+  <section class="sec" aria-labelledby="h-why">
+    <h2 id="h-why">Why this recommendation</h2>
+    <div id="why" class="muted" style="max-width:70ch;display:grid;gap:12px;margin-top:12px"></div>
+    <p class="tiny faint" style="margin-top:12px">Written by AI from the calculated figures in this report. It adds no numbers of its own.</p>
+  </section>
+
+  <section class="sec" aria-labelledby="h-method">
+    <h2 id="h-method">Method and assumptions</h2>
+    <div class="method" style="margin-top:14px" id="method"></div>
+  </section>
+
+  <div class="actions no-print"><a class="btn primary" href="#review">Edit the numbers</a><a class="btn outline" href="#new">New comparison</a></div>
+</section>
+
+</div>
+</main>
+
+<footer><div class="wrap"><span>AsliRate. Compare supplier quotes. Find the real rate.</span><span>Prototype v0.1</span></div></footer>
+
+<script id="data" type="application/json">__DATA__</script>
+<script>
+(function(){
+const D = JSON.parse(document.getElementById('data').textContent);
+const $ = (s, r=document) => r.querySelector(s);
+const $$ = (s, r=document) => [...r.querySelectorAll(s)];
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const S = D.suppliers;                       // already in rank order
+const byId = id => S.find(s => s.id === id);
+const best = S[0];
+
+/* ---------- routing ---------- */
+const PAGES = ['signup','company','dashboard','new','upload','reading','review','report'];
+function show(page, focus){
+  if (!PAGES.includes(page)) page = 'signup';
+  $$('section[data-page]').forEach(s => s.hidden = s.dataset.page !== page);
+  const pre = page === 'signup';
+  $('#appnav').hidden = pre; $('#authnav').hidden = !pre;
+  $$('#appnav a').forEach(a => { if (a.dataset.nav === page) a.setAttribute('aria-current','page'); else a.removeAttribute('aria-current'); });
+  $('#jump').value = page;
+  document.title = ({signup:'Sign up',company:'Company details',dashboard:'Comparisons',new:'New comparison',upload:'Upload quotes',reading:'Reading quotes',review:'Check the numbers',report:'Analysis report'})[page] + ' | AsliRate prototype';
+  if (page === 'reading') startReading();
+  window.scrollTo(0,0);
+  if (focus) { const h = $(`section[data-page="${page}"] h1`); h && h.focus({preventScroll:true}); }
+}
+window.addEventListener('hashchange', () => show(location.hash.slice(1), true));
+$('#jump').addEventListener('change', e => location.hash = e.target.value);
+$$('[data-go]').forEach(b => b.addEventListener('click', () => location.hash = b.dataset.go));
+
+/* ---------- forms ---------- */
+$('#f-signup').addEventListener('submit', e => {
+  e.preventDefault();
+  const err = $('#su-err'); const msgs = [];
+  const set = (id, bad) => $(id).setAttribute('aria-invalid', bad ? 'true' : 'false');
+  const name = $('#su-name').value.trim(), email = $('#su-email').value.trim(), co = $('#su-company').value.trim(), pw = $('#su-pass').value;
+  set('#su-name', !name); if (!name) msgs.push('Enter your name.');
+  const okEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email); set('#su-email', !okEmail); if (!okEmail) msgs.push('Enter a valid email address.');
+  set('#su-company', !co); if (!co) msgs.push('Enter your company name.');
+  set('#su-pass', pw.length < 8); if (pw.length < 8) msgs.push('Use a password of at least 8 characters.');
+  if (!$('#su-terms').checked) msgs.push('Agree to the terms to continue.');
+  err.hidden = !msgs.length; err.textContent = msgs.join(' ');
+  if (!msgs.length) { $('#co-name').value = co; location.hash = 'company'; }
+});
+const GSTIN = /^\d{2}[A-Z]{5}\d{4}[A-Z][1-9A-Z]Z[0-9A-Z]$/;
+const STATES = {'06':'Haryana','07':'Delhi','09':'Uttar Pradesh','27':'Maharashtra','29':'Karnataka','33':'Tamil Nadu','24':'Gujarat','08':'Rajasthan','19':'West Bengal','36':'Telangana','03':'Punjab'};
+function gstinHint(){
+  const v = $('#co-gstin').value.trim().toUpperCase(), h = $('#co-gstin-hint'), none = $('#co-nogst').checked;
+  $('#co-gstin').disabled = none;
+  if (none) { h.textContent = 'GST you pay will be counted as part of the cost.'; h.className = 'hint'; return; }
+  if (!v) { h.textContent = 'Find it on any GST invoice you have issued.'; h.className = 'hint'; return; }
+  if (!GSTIN.test(v)) { h.textContent = 'A GSTIN has 15 characters, like 06ABCDE1234F1Z5.'; h.className = 'err'; return; }
+  h.textContent = `Registered in ${STATES[v.slice(0,2)] || 'state code ' + v.slice(0,2)}. GST on proper tax invoices will be counted as input tax credit.`; h.className = 'hint';
+}
+$('#co-gstin').addEventListener('input', gstinHint); $('#co-nogst').addEventListener('change', gstinHint);
+$('#f-company').addEventListener('submit', e => { e.preventDefault(); if ($('#co-gstin-hint').className === 'err') { $('#co-gstin').focus(); return; } location.hash = 'dashboard'; });
+$('#f-new').addEventListener('submit', e => {
+  e.preventDefault(); let ok = true;
+  [['#n-item', v => v.trim() !== '', 'Describe the item.'], ['#n-qty', v => Number(v.replace(/,/g,'')) > 0, 'Enter a quantity above 0.'], ['#n-unit', v => v.trim() !== '', 'Enter a unit, like boxes or kg.']].forEach(([id, test, msg]) => {
+    const el = $(id), p = el.parentElement.querySelector('.err'); const good = test(el.value);
+    el.setAttribute('aria-invalid', good ? 'false' : 'true'); p.hidden = good; p.textContent = msg; ok = ok && good;
+  });
+  if (ok) location.hash = 'upload';
+});
+
+/* ---------- upload ---------- */
+const files = [
+  {name:'Shree-Balaji-Quotation-SBP-2611.pdf', kind:'pdf', label:'PDF', size:'36 KB', supplier:'Shree Balaji Packaging'},
+  {name:'WhatsApp Image 2026-10-15.png', kind:'img', label:'IMG', size:'91 KB', supplier:'Om Corrugators'},
+  {name:'Kanha_Rate_List_Oct26.xlsx', kind:'xls', label:'XLS', size:'6 KB', supplier:'Kanha Paper Products'},
+];
+function kindOf(n){ n = n.toLowerCase(); if (n.endsWith('.pdf')) return ['pdf','PDF']; if (/\.(docx?)$/.test(n)) return ['doc','DOC']; if (/\.(xlsx?|csv)$/.test(n)) return ['xls','XLS']; if (/\.(jpe?g|png|heic|webp)$/.test(n)) return ['img','IMG']; return ['txt','TXT']; }
+function renderFiles(){
+  $('#filelist').innerHTML = files.map((f,i) => `<li><span class="ftype ${f.kind}" aria-hidden="true">${f.label}</span><div class="grow"><div class="trunc" style="font-weight:600">${esc(f.name)}</div><div class="tiny faint">${esc(f.size)}${f.supplier ? ' · from ' + esc(f.supplier) : ''}</div></div><button class="btn ghost sm" type="button" data-rm="${i}" aria-label="Remove ${esc(f.name)}">Remove</button></li>`).join('');
+  $$('[data-rm]').forEach(b => b.onclick = () => { files.splice(+b.dataset.rm, 1); renderFiles(); });
+  $('#filelist').hidden = !files.length;
+}
+function addFiles(list){
+  for (const f of list) { if (files.length >= 6) break; const [k,l] = kindOf(f.name); files.push({name:f.name, kind:k, label:l, size: Math.max(1, Math.round(f.size/1024)) + ' KB'}); }
+  renderFiles(); $('#up-err').hidden = true;
+}
+$('#file-in').addEventListener('change', e => addFiles(e.target.files));
+const drop = $('#drop');
+['dragenter','dragover'].forEach(t => drop.addEventListener(t, e => { e.preventDefault(); drop.classList.add('over'); }));
+['dragleave','drop'].forEach(t => drop.addEventListener(t, e => { e.preventDefault(); drop.classList.remove('over'); }));
+drop.addEventListener('drop', e => addFiles(e.dataTransfer.files));
+$('#add-paste').addEventListener('click', () => { const t = $('#paste').value.trim(); if (!t || files.length >= 6) return; files.push({name:'Pasted quote: ' + t.slice(0,40) + (t.length > 40 ? '…' : ''), kind:'txt', label:'TXT', size: t.length + ' characters'}); $('#paste').value=''; renderFiles(); });
+$('#read-btn').addEventListener('click', () => {
+  const err = $('#up-err');
+  if (files.length < 2) { err.hidden = false; err.textContent = 'Add at least 2 quotes to compare.'; return; }
+  location.hash = 'reading';
+});
+renderFiles();
+
+/* ---------- reading (simulated) ---------- */
+let readTimer;
+function startReading(){
+  clearInterval(readTimer);
+  const list = files.length >= 2 ? files : files.slice();
+  let n = 0;
+  const draw = () => {
+    $('#readlist').innerHTML = list.map((f,i) => `<li><span class="ftype ${f.kind}" aria-hidden="true">${f.label}</span><div class="grow"><div class="trunc" style="font-weight:600">${esc(f.name)}</div><div class="tiny faint">${i < n ? (f.supplier ? 'Read: ' + esc(f.supplier) + ', 14 fields' : 'Read') : i === n ? 'Reading prices, GST, freight, minimum order, terms…' : 'Waiting'}</div></div><span class="small">${i < n ? '<span style="color:var(--stamp);font-weight:650">Done</span>' : i === n ? '<span class="spin" aria-label="Reading"></span>' : ''}</span></li>`).join('');
+    $('#to-review').disabled = n < list.length;
+  };
+  draw();
+  readTimer = setInterval(() => { n++; draw(); if (n >= list.length) clearInterval(readTimer); }, 650);
+}
+$('#to-review').addEventListener('click', () => location.hash = 'review');
+
+/* ---------- review ---------- */
+const FILE_OF = {A:files[0], B:files[1], C:files[2]};
+const REVIEW = {
+  A: {fields:[['Price','₹18.00 per box','Rate: ₹18.00 per box'],['GST','18%, extra','Terms 1: GST @ 18% extra as applicable'],['Supplier GSTIN','06AAPFS4721K1ZU','GSTIN: 06AAPFS4721K1ZU'],['Freight','₹6,000 extra','Terms 2: Freight ₹6,000 extra'],['Minimum order','2,000 boxes','Terms 3: Minimum order 2,000 boxes'],['Delivery','10 days from PO','Terms 4: Delivery within 10 days of PO'],['Payment terms','50% advance, balance on delivery','Terms 6: 50% advance with PO'],['Valid until','31 Mar 2027','Terms 5: Valid till 31-03-2027'],['Item quoted','3-ply, 12x10x8 in, 150 GSM','Row 1 description']]},
+  B: {fields:[['Price','₹19.50 per box','“19.50 per box all inclusive”'],['GST','18%, included','“all inclusive (GST 18% + delivery)”'],['Supplier GSTIN','07BHKPR2219M1ZX','“GST no. 07BHKPR2219M1ZX”'],['Freight','Included','“+ delivery”'],['Minimum order','Not stated',''],['Delivery','7 days','“ready in 1 week”'],['Payment terms','Not stated','',true],['Valid until','Not stated',''],['Item quoted','3-ply, 12x10x8, brown','“12x10x8 3 ply brown”']]},
+  C: {fields:[['Price','₹17.20 per box','Row 6: 3 Ply 12x10x8 | ₹17.20'],['GST','18%, extra','Terms: GST 18% extra'],['Supplier GSTIN','09AAJCK8834D1Z9','Cell B3: GSTIN 09AAJCK8834D1Z9'],['Freight','₹9,000 extra','Terms: Freight to Gurugram ₹9,000'],['Minimum order','10,000 boxes','Row 6: MOQ 10,000'],['Delivery','14 days','Terms: Dispatch in 2 weeks',true],['Payment terms','30 days credit','Terms: Payment 30 days from invoice'],['Valid until','31 Mar 2027','Terms: Rates valid up to 31 Mar 2027'],['Item quoted','3-ply, 12x10x8 in, natural kraft','Row 6']]},
+};
+let lowLeft = 2;
+function renderReview(){
+  $('#rv-cards').innerHTML = ['A','B','C'].map(id => {
+    const s = byId(id), f = FILE_OF[id] || {name:'', kind:'txt', label:'TXT'};
+    const fields = REVIEW[id].fields.map(([k,v,src,low],i) => `<div class="${low ? 'low' : ''}" data-low="${low ? id+i : ''}"><label class="f" for="rv-${id}-${i}">${k}</label><input class="inp" id="rv-${id}-${i}" value="${esc(v)}">${low ? `<div class="flag"><span>${k === 'Delivery' ? '“Dispatch” may not mean delivered' : 'Not in the quote. We assumed on delivery'}</span><button type="button" data-ok="${id+i}">Looks right</button></div>` : ''}${src ? `<p class="src" title="${esc(src)}">From the quote: ${esc(src)}</p>` : '<p class="src">Not found in the quote</p>'}</div>`).join('');
+    return `<article class="panel" aria-label="Quote from ${esc(s.name)}"><div class="panel-h"><div><h3>${esc(s.name)}</h3><p class="tiny faint" style="margin-top:2px">${f.label === 'IMG' ? 'WhatsApp screenshot' : f.label === 'XLS' ? 'Excel rate list' : 'PDF quotation'}: ${esc(f.name)}</p></div><span class="pill ${REVIEW[id].fields.some(x=>x[3]) ? 'warn' : 'ok'}" data-pill="${id}">${REVIEW[id].fields.some(x=>x[3]) ? '1 value to check' : 'Ready'}</span></div><div class="panel-b rv-grid">${fields}</div>
+    <div class="rel"><div><label class="f" for="rel-${id}">Bought from them before?</label><select class="inp" id="rel-${id}"><option>No, first time</option><option>Yes, it went well</option><option>Yes, there were problems</option></select><p class="hint">Feeds the "supplier fit" score. Never read from the quote.</p></div><div><label class="f" for="lfl-${id}">Same item as you asked for?</label><select class="inp" id="lfl-${id}"><option>Yes</option><option>No, it's different</option></select></div></div></article>`;
+  }).join('');
+  $$('[data-ok]').forEach(b => b.onclick = () => {
+    const box = $(`[data-low="${b.dataset.ok}"]`); box.classList.remove('low'); b.parentElement.remove();
+    const id = b.dataset.ok[0]; const pill = $(`[data-pill="${id}"]`); pill.className = 'pill ok'; pill.textContent = 'Ready';
+    lowLeft--; banner();
+  });
+  banner();
+}
+function banner(){
+  const b = $('#rv-banner');
+  b.hidden = lowLeft <= 0;
+  b.textContent = `${lowLeft === 1 ? 'One value needs' : lowLeft + ' values need'} a look: highlighted below. Confirm or correct against the original quote.`;
+}
+renderReview();
+
+/* ---------- report ---------- */
+const P = s => Number(String(s).replace(/[₹,]/g,''));   // display only, for bar widths
+const WEIGHT_LABEL = {cost:'Real cost', delivery:'Delivery', terms:'Payment terms', compliance:'GST compliance', completeness:'Quote completeness', fit:'Supplier fit'};
+const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const fmtDate = iso => { const [y,m,d] = iso.split('-').map(Number); return `${d} ${MONTHS[m-1]}`; };
+const TERMS_SHORT = {A:'50% advance with PO', B:'Not stated in chat', C:'30 days credit'};
+const DOC = {A:'formal quotation', B:'chat message', C:'formal rate list'};
+const TERM_NAMES = ['price','GST','freight','minimum order','delivery','validity','payment terms'];
+const WHY = Object.fromEntries(S.map(s => {
+  const n = s.stated.filter(Boolean).length, missing = TERM_NAMES.filter((t,i) => !s.stated[i]);
+  return [s.id, {
+    cost: (s.rank === 1 ? 'Lowest at ' : '') + s.per_unit_with_financing + ' a box' + (s.excess_qty !== '0' ? `, must buy ${s.buy_qty}` : ''),
+    delivery: `${s.lead_days} days, arrives ${fmtDate(s.delivery_date)} (${s.days_spare} days spare)`,
+    terms: TERMS_SHORT[s.id],
+    compliance: s.gstin ? `GSTIN on ${DOC[s.id]}` : 'No GSTIN',
+    completeness: n === 7 ? 'All 7 key terms stated' : `${n} of 7 stated; missing ${missing.join(', ')}`,
+    fit: 'Not rated yet',
+  }];
+}));
+let W = {...D.weights};
+const overall = s => { const tot = Object.values(W).reduce((a,b)=>a+b,0) || 1; return Math.round(Object.keys(W).reduce((a,k)=>a + s.scores[k]*W[k], 0) / tot * 10) / 10; };
+const cls = v => v >= 80 ? 's-hi' : v >= 55 ? 's-mid' : 's-lo';
+
+function renderVerdict(){
+  const ranked = [...S].sort((a,b) => overall(b) - overall(a));
+  const top = ranked[0], cheap = best;
+  const same = top.id === cheap.id;
+  $('#verdict').innerHTML = `<div><span class="stamp">${same ? 'Best overall and lowest real cost' : 'Best overall on your priorities'}</span>
+    <h2>${esc(top.name)}</h2>
+    <p class="lead">${same
+      ? `Real cost <b class="num">${top.effective}</b> for 5,000 boxes (<b class="num">${top.per_unit}</b> a box), <b class="num">${D.savings}</b> less than ${esc(S[1].name)}. It also scores highest overall (${overall(top)} of 100) and delivers fastest.`
+      : `Scores ${overall(top)} of 100 on your current priorities. ${esc(cheap.name)} is still cheapest at <b class="num">${cheap.effective}</b>, but scores ${overall(cheap)}.`}</p>
+    <p style="margin-top:12px;color:var(--amber);font-weight:600" class="small">Before ordering: get a proper quotation or proforma invoice with payment terms and validity. The WhatsApp quote leaves them out.</p></div>
+    <dl class="kv"><dt>You pay the supplier</dt><dd class="num">${top.cash}</dd><dt>GST you claim back</dt><dd class="num">−${top.credit}</dd><dt>Real cost</dt><dd class="num best-txt">${top.effective}</dd><dt>Per box</dt><dd class="num">${top.per_unit}</dd><dt>Delivery</dt><dd>${top.lead_days} days</dd><dt>Overall score</dt><dd class="num">${overall(top)} / 100</dd></dl>`;
+}
+
+function renderCompare(){
+  const head = `<thead><tr><th><span class="sr">Rank</span></th><th>Supplier</th><th class="r">Quoted</th><th class="r">You buy</th><th class="r">You pay (incl. GST)</th><th class="r">GST credit</th><th class="r">Real cost</th><th class="r">Per box</th><th class="r">Payment terms effect</th><th class="r">Score</th></tr></thead>`;
+  const rows = S.map(s => `<tr class="${s.rank===1?'best':''}"><td class="rk">${s.rank}</td><td><b>${esc(s.name)}</b><div class="tiny faint">${s.gst==='included'?'GST included':'+ GST'}, ${s.freight === '₹0.00' ? 'delivered' : 'freight ' + s.freight}</div>
+    <details class="work"><summary>Show working</summary><dl class="workdl"><dt>Boxes bought</dt><dd class="num">${s.buy_qty}</dd><dt>Goods before GST</dt><dd class="num">${s.goods}</dd><dt>Freight</dt><dd class="num">${s.freight}</dd><dt>Subtotal before GST</dt><dd class="num">${s.subtotal}</dd><dt>GST at 18%</dt><dd class="num">${s.gst_amt}</dd><dt>You pay the supplier</dt><dd class="num">${s.cash}</dd><dt>Less GST credit</dt><dd class="num">−${s.credit}</dd><dt><b>Real cost</b></dt><dd class="num"><b>${s.effective}</b></dd><dt>Payment terms effect at ${D.cost_of_funds_pct}%</dt><dd class="num">${s.financing}</dd><dt><b>Including payment terms</b></dt><dd class="num"><b>${s.total_with_financing}</b></dd></dl></details></td>
+    <td class="r num">${s.quoted_unit}</td><td class="r num">${s.buy_qty}${s.excess_qty !== '0' ? `<div class="tiny" style="color:var(--danger)">+${s.excess_qty} extra</div>` : ''}</td><td class="r num">${s.cash}</td><td class="r num">−${s.credit}</td><td class="r num" style="font-weight:700${s.rank===1?';color:var(--stamp)':''}">${s.effective}</td><td class="r num" style="font-weight:650">${s.per_unit}</td><td class="r num">${s.financing === '₹0.00' ? '<span class="faint">None</span>' : s.financing.startsWith('-') ? `<span style="color:var(--stamp)">${s.financing.replace('-','−')}</span><div class="tiny faint">credit saving</div>` : `${s.financing}<div class="tiny faint">advance cost</div>`}</td><td class="r num" data-ov="${s.id}">${overall(s)}</td></tr>`).join('');
+  $('#cmp-table').innerHTML = head + '<tbody>' + rows + '</tbody>';
+  $('#cmp-cards').innerHTML = S.map(s => `<div class="card-sm ${s.rank===1?'best':''}"><div style="display:flex;gap:10px;align-items:baseline"><span class="rk">${s.rank}</span><div><b>${esc(s.name)}</b><div class="tiny faint">${s.quoted_unit} a box, ${s.gst==='included'?'GST included':'+ GST'}</div></div></div><dl><div><dt>Real cost</dt><dd class="num" style="font-size:17px${s.rank===1?';color:var(--stamp)':''}">${s.effective}</dd></div><div><dt>Per box</dt><dd class="num" style="font-size:17px">${s.per_unit}</dd></div><div><dt>You pay (incl. GST)</dt><dd class="num">${s.cash}</dd><div></div></div><div><dt>You buy</dt><dd class="num">${s.buy_qty}${s.excess_qty !== '0' ? ` <span style="color:var(--danger)">(+${s.excess_qty})</span>` : ''}</dd></div><div><dt>Payment terms effect</dt><dd class="num">${s.financing === '₹0.00' ? 'None' : s.financing.startsWith('-') ? `<span style="color:var(--stamp)">${s.financing.replace('-','−')} saved</span>` : s.financing}</dd></div><div><dt>Score</dt><dd class="num" data-ov="${s.id}">${overall(s)}</dd></div></dl></div>`).join('');
+}
+
+function renderBars(){
+  const totals = S.map(s => { const b = s.bars; return b.goods + b.freight + b.gst_lost + Math.max(0, b.financing); });
+  const max = Math.max(...totals);
+  $('#bars').innerHTML = S.map((s,i) => {
+    const b = s.bars, need = b.goods_need, extraGoods = b.goods - b.goods_need;
+    const seg = (v, c, t) => v > 0 ? `<span class="${c}" style="width:${(v/max*100).toFixed(2)}%" title="${t}"></span>` : '';
+    const note = b.financing < 0 ? `<div class="tiny" style="color:var(--stamp)">30-day credit saves you ${s.financing.replace('-','')}</div>` : '';
+    return `<div class="bar-row"><div><b>${esc(s.name)}</b><div class="tiny faint">${s.excess_qty !== '0' ? `Buys ${s.buy_qty}, needs 5,000` : 'Buys exactly 5,000'}</div></div>
+      <div class="bar-track" role="img" aria-label="${esc(s.name)}: real cost ${s.total_with_financing}">${seg(need,'c-goods','Boxes you need')}${seg(extraGoods,'c-goods-p','Extra boxes')}${seg(b.freight,'c-freight','Freight')}${seg(b.gst_lost,'c-gst',"GST you can't claim")}${seg(Math.max(0,b.financing),'c-fin','Cost of paying in advance')}</div>
+      <div class="num" style="text-align:right;font-weight:650">${s.total_with_financing}${note}</div></div>`;
+  }).join('');
+}
+
+function renderScore(){
+  const crit = Object.keys(D.weights);
+  $('#score-table').innerHTML = `<thead><tr><th>Criterion</th><th class="r">Weight</th>${S.map(s=>`<th style="text-align:center">${esc(s.name)}</th>`).join('')}</tr></thead><tbody>` +
+    crit.map(k => `<tr><td><b>${WEIGHT_LABEL[k]}</b></td><td class="r num" data-w="${k}">${W[k]}%</td>${S.map(s => `<td class="sc"><span class="sc-cell ${cls(s.scores[k])}">${s.scores[k]}</span><span class="why">${esc(WHY[s.id][k])}</span></td>`).join('')}</tr>`).join('') +
+    `<tr><td><b>Overall</b></td><td class="r num" id="w-tot">${Object.values(W).reduce((a,b)=>a+b,0)}%</td>${S.map(s=>`<td class="sc"><span class="sc-cell ${cls(overall(s))}" style="font-size:16px" data-ov="${s.id}">${overall(s)}</span></td>`).join('')}</tr></tbody>`;
+  $('#weights').innerHTML = crit.map(k => `<div><label for="w-${k}"><span>${WEIGHT_LABEL[k]}</span><b class="num" id="wv-${k}">${W[k]}</b></label><input type="range" id="w-${k}" min="0" max="80" step="5" value="${W[k]}"></div>`).join('') + `<div style="align-self:end"><button class="btn outline sm" type="button" id="w-reset">Reset to Balanced</button></div>`;
+  crit.forEach(k => $('#w-'+k).addEventListener('input', e => { W[k] = +e.target.value; updateScores(); }));
+  $('#w-reset').addEventListener('click', () => { W = {...D.weights}; crit.forEach(k => $('#w-'+k).value = W[k]); updateScores(); });
+}
+function updateScores(){
+  Object.keys(W).forEach(k => { $('#wv-'+k).textContent = W[k]; const c = $(`[data-w="${k}"]`); if (c) c.textContent = W[k] + '%'; });
+  $('#w-tot').textContent = Object.values(W).reduce((a,b)=>a+b,0) + '%';
+  $$('[data-ov]').forEach(el => { const s = byId(el.dataset.ov), v = overall(s); el.textContent = v; if (el.classList.contains('sc-cell')) el.className = 'sc-cell ' + cls(v); });
+  renderVerdict();
+}
+
+function renderScenarios(){
+  const A = byId('A'), C = byId('C');
+  const list = (rows) => `<ul class="mini">${rows.map(r=>`<li><span>${r.rank}. ${esc(r.name)}</span><span class="num">${r.per_unit}</span></li>`).join('')}</ul>`;
+  $('#scenarios').innerHTML = `
+    <div class="box"><h3>Ask Shree Balaji to match</h3><p class="muted small">To match the lowest real cost (${esc(best.name)}) while still charging ${A.freight} freight, their rate must fall from ${A.quoted_unit} to:</p><p class="num" style="font-size:26px;font-weight:750;margin-top:10px">${A.price_to_match} <span class="small faint" style="font-weight:400">a box, + GST</span></p><p class="tiny faint" style="margin-top:6px">If they also waived the freight, ${A.price_to_match_free_freight} a box would match.</p></div>
+    <div class="box"><h3>Ask Kanha to drop the minimum</h3><p class="muted small">If Kanha waived the 10,000 minimum and you bought 5,000, they'd still need to quote:</p><p class="num" style="font-size:26px;font-weight:750;margin-top:10px">${C.price_to_match} <span class="small faint" style="font-weight:400">a box, + GST</span></p><p class="tiny faint" style="margin-top:6px">Kept at 10,000 boxes, it would take ${C.price_to_match_at_moq} a box, so the minimum order is the real problem.</p></div>
+    <div class="box"><h3>If the numbers change</h3><p class="muted small">If you actually need 10,000 boxes:</p>${list(D.scenario_10k)}<p class="muted small" style="margin-top:12px">If you weren't GST-registered:</p>${list(D.unregistered)}</div>`;
+}
+
+function renderRisks(){
+  const items = [];
+  S.forEach(s => s.warnings.forEach(w => items.push({sev:w.severity, who:s.name, text:w.message})));
+  items.push({sev:'medium', who:'Om Corrugators', text:'Payment terms and validity aren\'t in the WhatsApp message. Ask for a proforma invoice that states both before you pay anything.'});
+  items.push({sev:'medium', who:'Om Corrugators', text:'The quote came over chat, not on letterhead. Confirm the GSTIN is active on the GST portal (Search Taxpayer) before ordering.'});
+  const C = byId('C'), A = byId('A');
+  items.push({sev:'info', who:C.name, text:`"Dispatch in 2 weeks" may mean delivery takes longer than 14 days. Taken as 14, it arrives ${fmtDate(C.delivery_date)}, ${C.days_spare} days before you need it.`});
+  items.push({sev:'info', who:A.name, text:`The 50% advance locks up ${A.advance_amount} for ${A.lead_days} days. At your ${D.cost_of_funds_pct}% cost of funds that costs ${A.financing}, already counted in the real cost.`});
+  const order = {high:0, medium:1, info:2};
+  items.sort((a,b) => order[a.sev] - order[b.sev]);
+  $('#risks').innerHTML = items.map(i => `<li><span class="dot ${i.sev}" aria-hidden="true"></span><span><b>${esc(i.who)}.</b> ${esc(i.text)}<span class="sr"> (${i.sev === 'high' ? 'important' : i.sev === 'medium' ? 'check' : 'note'})</span></span></li>`).join('');
+}
+
+function renderWhy(){
+  const A = byId('A'), C = byId('C');
+  $('#why').innerHTML = [
+    `${esc(best.name)} quotes the highest rate on paper (${best.quoted_unit}) but is the cheapest in reality. Its price already includes GST and delivery. Because you're GST-registered and they have a GSTIN, the ${best.credit} of GST inside the price comes back to you as input tax credit, so the boxes really cost you ${best.per_unit} each.`,
+    `${esc(A.name)} quotes less per box (${A.quoted_unit}), but ${A.freight} freight and a 50% advance take its real cost to ${A.total_with_financing}. It is the most complete and formal quote, which makes it the safest fallback.`,
+    `${esc(C.name)} has the lowest sticker price (${C.quoted_unit}) and the best payment terms, but its 10,000-box minimum forces you to buy 5,000 boxes you don't need (${C.excess_value} of stock) plus ${C.freight} freight. Even after the 30-day credit, it costs ${C.total_with_financing}.`,
+    robustness()
+  ].map(p => `<p>${p}</p>`).join('');
+}
+
+const PRESETS = {
+  'Lowest cost': {cost:70, delivery:10, terms:5, compliance:5, completeness:5, fit:5},
+  'Balanced': {...D.weights},
+  'Fast delivery': {cost:40, delivery:35, terms:10, compliance:5, completeness:5, fit:5},
+};
+function robustness(){
+  const winners = Object.entries(PRESETS).map(([name, w]) => {
+    const tot = Object.values(w).reduce((a,b)=>a+b,0);
+    const sc = s => Object.keys(w).reduce((a,k)=>a + s.scores[k]*w[k], 0) / tot;
+    return [name, [...S].sort((a,b) => sc(b) - sc(a))[0]];
+  });
+  const allSame = winners.every(([,s]) => s.id === winners[0][1].id);
+  const flip = D.no_gstin[0];
+  const head = allSame
+    ? `${esc(winners[0][1].name)} comes out on top under all three priority presets (lowest cost, balanced, fast delivery).`
+    : 'The winner depends on your priorities: ' + winners.map(([n,s]) => `${n}: ${esc(s.name)}`).join('; ') + '.';
+  return head + ` The one thing that would change it: if ${esc(best.name)} can't give a proper GST tax invoice, their GST can't be claimed, their real cost rises to ${D.no_gstin.find(r=>r.name===best.name).effective}, and ${esc(flip.name)} becomes cheapest at ${flip.effective}.`;
+}
+
+function renderMethod(){
+  $('#method').innerHTML = [
+    `<p><b>Real cost.</b> Goods before GST, plus freight and other charges. GST is added on top; it is subtracted again only when you're GST-registered and the supplier has a valid GSTIN or confirms a tax invoice. Prices that include GST are converted back to before-GST at the stated rate.</p>`,
+    `<p><b>Minimum orders and packs.</b> You're charged for the quantity you must buy (at least the minimum order, rounded up to whole packs), while the cost per box divides by the 5,000 you need.</p>`,
+    `<p><b>Payment terms.</b> Money paid before delivery is valued at your cost of funds (${D.cost_of_funds_pct}% a year) for the days it's locked up; credit days are valued the same way in your favour. Terms not stated are assumed to be payment on delivery and flagged.</p>`,
+    `<p><b>Scores.</b> Real cost: lowest scores 100, others in proportion. Delivery: fastest scores 100, others in proportion. Payment terms: 30+ days credit 100, on delivery 60, partial advance 40, not stated 50. GST compliance: claimable GST 80, plus 20 for a formal document. Completeness: share of 7 key terms stated. Supplier fit: your own rating, 60 until you rate.</p>`,
+    `<p><b>Who does what.</b> AI reads the quotes and writes the explanation above. Every number comes from a fixed calculator: the same inputs always give the same answer. All amounts are in rupees, rounded to the paisa.</p>`,
+    `<p><b>Assumptions in this report.</b> GST 18% on boxes and freight. Comparison date 17 Oct 2026. Kanha's "dispatch in 2 weeks" taken as 14 days. Om Corrugators' payment terms assumed on delivery.</p>`
+  ].join('');
+}
+
+$('#share-btn').addEventListener('click', () => { const m = $('#share-msg'); m.hidden = false; m.textContent = 'Read-only link copied: aslirate.in/r/7Kq2mX (prototype, not a real link).'; });
+$('#xls-btn').addEventListener('click', () => {
+  const rows = [['Rank','Supplier','Quoted per box','Boxes bought','You pay incl GST','GST credit','Real cost','Per box','Payment terms effect','Real cost incl terms','Score']].concat(
+    S.map(s => [s.rank, s.name, P(s.quoted_unit), P(s.buy_qty), P(s.cash), P(s.credit), P(s.effective), P(s.per_unit), P(s.financing), P(s.total_with_financing), overall(s)]));
+  const csv = rows.map(r => r.map(v => `"${String(v).replace(/"/g,'""')}"`).join(',')).join('\n');
+  const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob(['﻿'+csv], {type:'text/csv'})); a.download = 'AsliRate-shipping-boxes.csv'; a.click();
+});
+
+renderVerdict(); renderCompare(); renderBars(); renderScore(); renderScenarios(); renderRisks(); renderWhy(); renderMethod();
+show(location.hash.slice(1) || 'signup', false);
+})();
+</script>
+</body>
+</html>

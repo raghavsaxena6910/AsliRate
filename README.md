@@ -66,4 +66,15 @@ Without B's GSTIN, B becomes ₹97,500.00 and the order is A, B, C.
 - Multi-item quotes and comparing a basket of items
 - "What if" toggles directly on the results page
 - Hindi interface
-- Upgrade Vercel to Pro before the pricing page goes live (Hobby is non-commercial only)
+- Hosting stays on Vercel Hobby. Before showing a paid price or taking payments, revisit: Hobby's fair-use terms are non-commercial only (options: confirm with Vercel support, waitlist without a price, or upgrade at first paying customer)
+
+## Prototype
+
+`prototype/aslirate-prototype.html` is a single-file clickable prototype of the full flow (sign up → company → dashboard → new comparison → upload → reading → review → analysis report). Its figures come from the engine:
+
+```bash
+npx tsx scripts/prototype-data.ts > prototype/data.json
+python3 -c "s=open('prototype/src.html').read();d=open('prototype/data.json').read();open('prototype/aslirate-prototype.html','w').write(s.replace('__DATA__',d.replace('</','<\\\\/')))"
+```
+
+Payment-terms cost and the scorecard rules in `scripts/prototype-data.ts` are proposed; they move into `src/lib/engine` with tests when built.
