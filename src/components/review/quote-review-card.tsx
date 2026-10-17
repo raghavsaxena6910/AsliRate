@@ -58,7 +58,12 @@ export function QuoteReviewCard({ form, unit, file, errors = {}, onChange }: Pro
             </a>
           )}
         </div>
-        {lowCount > 0 ? (
+        {!form.supplier_name.trim() || !form.unit_price.trim() ? (
+          <span className="inline-flex items-center gap-1.5 rounded-full bg-amber-2 px-3 py-1 text-[13px] font-semibold text-amber">
+            <AlertTriangle className="size-3.5" aria-hidden />
+            Type the numbers
+          </span>
+        ) : lowCount > 0 ? (
           <span className="inline-flex items-center gap-1.5 rounded-full bg-amber-2 px-3 py-1 text-[13px] font-semibold text-amber">
             <AlertTriangle className="size-3.5" aria-hidden />
             {lowCount === 1 ? "1 value to check" : `${lowCount} values to check`}

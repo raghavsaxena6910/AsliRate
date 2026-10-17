@@ -71,8 +71,9 @@ export function QuoteUploader({
     if (list.length > room) setMessage(`You can add ${room} more ${room === 1 ? "quote" : "quotes"} (6 at most). The rest were skipped.`);
     const supabase = createClient();
     setBusy(true);
-    await Promise.all(
-      list.slice(0, Math.max(0, room)).map(async (file) => {
+    // One at a time, so each quote keeps the order it was added in.
+    for (const file of list.slice(0, Math.max(0, room))) {
+      await (async () => {
         const key = crypto.randomUUID();
         const kind = kindOf(file.name, file.type);
         const base: Item = { id: "", key, label: file.name, kind, size: file.size, status: "uploading" };
@@ -87,8 +88,8 @@ export function QuoteUploader({
         const res = await addFileQuote({ comparisonId, path, name: file.name, size: file.size, mime: mimeFor(file.name, file.type) });
         if (!res.ok) return patch(key, { status: "error", error: res.message });
         patch(key, { status: "saved", id: res.id! });
-      }),
-    );
+      })();
+    }
     setBusy(false);
     if (inputRef.current) inputRef.current.value = "";
   }
