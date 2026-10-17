@@ -2,43 +2,48 @@
 @import "@fontsource-variable/schibsted-grotesk";
 
 /*
- * AsliRate tokens — borrowed from the Indian bill book: white paper, navy ink,
- * carbon-copy blue for actions, rubber-stamp green for the winner, amber for
- * things to check, and the pink margin rule used exactly once (the ledger).
+ * AsliRate tokens, taken from the logo: deep green #004B25, mid green #007A33,
+ * bright green #1BC43D. Green marks the brand, the winner and the "real rate";
+ * everything else is white and a green-tinted near-black.
  */
 :root {
   color-scheme: light;
   --paper: #ffffff;
-  --paper-2: #f5f7fb;
-  --ink: #16202e;
-  --ink-2: #4a5568;
-  --ink-3: #6b7587;
-  --carbon: #2340a0;
-  --carbon-2: #e8edfa;
-  --stamp: #0e7a4b;
-  --stamp-2: #e5f4ec;
+  --paper-2: #f3f8f4;
+  --ink: #0f1f17;
+  --ink-2: #3f4f47;
+  --ink-3: #64736b;
+  --brand: #087a37;
+  --brand-deep: #054d27;
+  --brand-bright: #22c445;
+  --brand-2: #e7f5ec;
+  /* Legacy names used across components, now mapped to the brand. */
+  --carbon: var(--brand);
+  --carbon-2: var(--brand-2);
+  --stamp: var(--brand);
+  --stamp-2: var(--brand-2);
   --amber: #a85a06;
   --amber-2: #fdf3e3;
   --danger: #b42318;
   --danger-2: #fdeceb;
-  --margin-rule: #e6a2b4;
-  --line: #dde2ea;
-  --line-2: #c5ccd8;
+  --margin-rule: #b9e3c5;
+  --line: #dfe7e2;
+  --line-2: #c8d4cd;
 
   /* shadcn/ui contract */
-  --radius: 0.5rem;
+  --radius: 0.625rem;
   --background: var(--paper);
   --foreground: var(--ink);
   --card: var(--paper);
   --card-foreground: var(--ink);
-  --primary: var(--carbon);
+  --primary: var(--ink);
   --primary-foreground: #ffffff;
   --secondary: var(--paper-2);
   --secondary-foreground: var(--ink);
   --muted: var(--paper-2);
   --muted-foreground: var(--ink-3);
   --accent: var(--carbon-2);
-  --accent-foreground: var(--carbon);
+  --accent-foreground: var(--brand);
   --destructive: var(--danger);
   --border: var(--line);
   --input: var(--line-2);
@@ -68,6 +73,10 @@
   --color-ink-2: var(--ink-2);
   --color-ink-3: var(--ink-3);
   --color-paper-2: var(--paper-2);
+  --color-brand: var(--brand);
+  --color-brand-deep: var(--brand-deep);
+  --color-brand-bright: var(--brand-bright);
+  --color-brand-2: var(--brand-2);
   --color-carbon: var(--carbon);
   --color-carbon-2: var(--carbon-2);
   --color-stamp: var(--stamp);

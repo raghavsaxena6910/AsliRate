@@ -10,7 +10,7 @@ import { cn } from "@/lib/utils";
 
 type Mode = "quoted" | "asli";
 
-const ROW_H = 88;
+const ROW_H = 100;
 
 /** Engine output for the three sample suppliers, computed once. */
 function useLedgerRows() {
@@ -75,7 +75,7 @@ export function RateLedger() {
 
   return (
     <figure className="relative">
-      <div className="overflow-hidden rounded-lg border border-line-2 bg-white shadow-[0_1px_0_var(--line),0_12px_32px_-16px_rgba(22,32,46,0.25)]">
+      <div className="overflow-hidden rounded-2xl border border-line-2 bg-white shadow-[0_1px_0_var(--line),0_28px_56px_-28px_rgba(5,77,39,0.45)]">
         <div className="flex flex-wrap items-center justify-between gap-3 border-b border-line bg-paper-2 px-4 py-3">
           <p className="text-sm font-semibold text-ink">5,000 shipping boxes, three quotes</p>
           <Segmented
@@ -93,29 +93,29 @@ export function RateLedger() {
           />
         </div>
 
-        <div className="grid grid-cols-[2.25rem_1fr_4.5rem_4.75rem] items-end gap-x-3 border-b border-line px-4 pt-3 pb-2 text-xs font-medium text-ink-3 sm:grid-cols-[2.5rem_1fr_5.5rem_5.5rem]">
+        <div className="grid grid-cols-[1.25rem_1fr_3.6rem_4.4rem] items-end gap-x-2.5 border-b border-line px-3.5 sm:gap-x-3 sm:px-4 pt-3 pb-2 text-xs font-medium text-ink-3 sm:grid-cols-[2.5rem_1fr_5.5rem_5.5rem]">
           <span className="sr-only">Rank</span>
-          <span className="col-start-2">Supplier</span>
-          <span className={cn("text-right transition-colors", mode === "quoted" && "text-ink")}>Quoted / box</span>
-          <span className={cn("text-right transition-colors", mode === "asli" && "text-stamp")}>Asli rate / box</span>
+          <span className="col-start-2 pl-1.5 sm:pl-1">Supplier</span>
+          <span className={cn("text-right transition-colors", mode === "quoted" && "text-ink")}>Quoted<span className="hidden sm:inline"> / box</span></span>
+          <span className={cn("text-right transition-colors", mode === "asli" && "text-stamp")}>Asli rate<span className="hidden sm:inline"> / box</span></span>
         </div>
 
         <ol className="relative" style={{ height: ROW_H * rows.length }} aria-live="polite">
           {/* The bill-book margin rule. */}
-          <span aria-hidden className="absolute inset-y-0 left-[3.1rem] w-px bg-margin-rule sm:left-[3.4rem]" />
+          <span aria-hidden className="absolute inset-y-0 left-[2.15rem] w-px bg-margin-rule sm:left-[3.4rem]" />
           {rows.map((row) => {
             const pos = order.get(row.id)!;
             const isWinner = mode === "asli" && row.asliRank === 1;
             return (
               <li
                 key={row.id}
-                className="absolute inset-x-0 grid grid-cols-[2.25rem_1fr_4.5rem_4.75rem] items-center gap-x-3 border-b border-line px-4 transition-transform duration-[600ms] ease-[cubic-bezier(.2,.8,.2,1)] last:border-b-0 sm:grid-cols-[2.5rem_1fr_5.5rem_5.5rem]"
+                className="absolute inset-x-0 grid grid-cols-[1.25rem_1fr_3.6rem_4.4rem] items-center gap-x-2.5 border-b border-line px-3.5 sm:gap-x-3 sm:px-4 transition-transform duration-[600ms] ease-[cubic-bezier(.2,.8,.2,1)] last:border-b-0 sm:grid-cols-[2.5rem_1fr_5.5rem_5.5rem]"
                 style={{ height: ROW_H, transform: `translateY(${pos * ROW_H}px)` }}
               >
-                <span className="num text-[22px] font-semibold text-ink-3">{pos + 1}</span>
-                <span className="min-w-0 pl-1">
-                  <span className="block truncate text-[15px] font-semibold text-ink">{row.name}</span>
-                  <span className="mt-0.5 block text-[13px] leading-snug text-ink-2">
+                <span className="num text-[18px] font-semibold text-ink-3 sm:text-[22px]">{pos + 1}</span>
+                <span className="min-w-0 pl-1.5 sm:pl-1">
+                  <span className="block text-[14px] leading-tight font-semibold text-ink sm:truncate sm:text-[15px]">{row.name}</span>
+                  <span className="mt-0.5 line-clamp-2 text-[12px] leading-snug text-ink-2 sm:text-[13px]">
                     {mode === "quoted" ? row.quotedAs : row.reason}
                   </span>
                 </span>
