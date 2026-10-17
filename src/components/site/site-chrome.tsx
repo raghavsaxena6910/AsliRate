@@ -51,6 +51,12 @@ export function SiteFooter() {
           <Link href="/demo" className="hover:text-ink">
             Demo
           </Link>
+          <Link href="/privacy" className="hover:text-ink">
+            Privacy
+          </Link>
+          <Link href="/terms" className="hover:text-ink">
+            Terms
+          </Link>
           <span>© 2026 AsliRate</span>
         </div>
       </div>

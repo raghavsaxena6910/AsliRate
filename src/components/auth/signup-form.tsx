@@ -60,7 +60,17 @@ export function SignupForm() {
             aria-invalid={e.agree ? true : undefined}
             aria-describedby={e.agree ? "agree-error" : undefined}
           />
-          <span>I agree to the terms of use and privacy policy.</span>
+          <span>
+            I agree to the{" "}
+            <Link href="/terms" target="_blank" className="font-semibold text-carbon hover:underline">
+              terms of use
+            </Link>{" "}
+            and{" "}
+            <Link href="/privacy" target="_blank" className="font-semibold text-carbon hover:underline">
+              privacy policy
+            </Link>
+            .
+          </span>
         </label>
         {e.agree && (
           <p id="agree-error" className="mt-1.5 text-[13px] font-medium text-danger">
