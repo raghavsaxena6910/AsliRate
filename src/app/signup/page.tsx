@@ -18,7 +18,7 @@ export default function SignupPage() {
           <aside className="self-start rounded-xl bg-paper-2 p-7">
             <h2 className="text-xl font-bold text-ink">What happens next</h2>
             <ol className="mt-4 list-decimal space-y-2 pl-5 leading-relaxed text-ink-2">
-              <li>Confirm your email, then tell us about your company so GST credit is counted correctly.</li>
+              <li>Tell us about your company, so GST credit is counted correctly.</li>
               <li>Describe what you&rsquo;re buying and add 2 to 6 quotes in any format.</li>
               <li>Check the numbers we read, then see which supplier is really cheapest, and why.</li>
             </ol>
