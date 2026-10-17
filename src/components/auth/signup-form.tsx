@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useActionState } from "react";
+import { useActionState, useEffect } from "react";
+import { track } from "@/lib/analytics";
 import { MailCheck } from "lucide-react";
 import { signup, type FormState } from "@/lib/auth/actions";
 import { Field, fieldProps, FormMessage } from "@/components/forms/field";
@@ -12,6 +13,10 @@ export function SignupForm() {
   const [state, action, pending] = useActionState<FormState, FormData>(signup, {});
   const e = state.errors ?? {};
   const v = state.values ?? {};
+
+  useEffect(() => {
+    if (state.checkEmail) track("signup_submitted");
+  }, [state.checkEmail]);
 
   if (state.checkEmail) {
     return (

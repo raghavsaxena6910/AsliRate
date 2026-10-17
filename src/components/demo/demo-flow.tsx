@@ -13,6 +13,7 @@ import {
   type SetupForm,
 } from "@/lib/review/quote-form";
 import { todayInIndia } from "@/lib/format";
+import { track } from "@/lib/analytics";
 import { QuoteReviewCard } from "@/components/review/quote-review-card";
 import { ResultsView } from "@/components/results/results-view";
 import { Button } from "@/components/ui/button";
@@ -39,6 +40,7 @@ export function DemoFlow() {
   // Move focus to the new step's heading so keyboard and screen-reader users follow along.
   const go = (next: Step) => {
     setStep(next);
+    track("demo_step_viewed", { step: next });
     requestAnimationFrame(() => {
       window.scrollTo({ top: 0 });
       headingRef.current?.focus();
@@ -105,6 +107,7 @@ export function DemoFlow() {
             onBack={() => go("upload")}
             onCompare={(r) => {
               setResult(r);
+              track("demo_quotes_compared", { quotes: r.results.length, buyer_gst_registered: r.input.buyer_gst_registered });
               go("results");
             }}
           />
