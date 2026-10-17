@@ -23,6 +23,10 @@ Small Indian businesses upload 2–6 supplier quotes (PDF, WhatsApp screenshot, 
 | `src/components/results/`, `src/components/review/` | Results and review UI, reused by the real flow later |
 | `public/samples/` | Sample quotes: A (PDF), B (WhatsApp image), C (Excel); regenerate with `python3 scripts/generate-samples.py` |
 
+## Supabase
+
+Project `aslirate` (ref `ljqcnvulhdsfukglcyjq`, Mumbai). Schema and policies live in `supabase/migrations/`. The URL and publishable key are public by design and default in `src/lib/supabase/config.ts`; secret keys only ever go in Vercel/Supabase environment settings.
+
 ## Commands
 
 ```bash
@@ -50,8 +54,8 @@ Without B's GSTIN, B becomes ₹97,500.00 and the order is A, B, C.
 
 1. ✅ Calculation engine + tests
 2. ✅ Landing page, demo mode, sample quote files
-3. Deploy to Vercel, connect aslirate.in
-4. Supabase auth, database (RLS on all tables), private storage
+3. Deploy to Vercel, connect aslirate.in (waiting on GitHub/Vercel accounts)
+4. ✅ Supabase auth, database (RLS on all tables), private storage
 5. AI extraction (server-only, Zod-validated) + review screen
 6. Real results, AI rationale from engine numbers, Excel/PDF export, share link
 7. Dashboard, pricing + Pro waitlist (₹999/month), privacy and terms

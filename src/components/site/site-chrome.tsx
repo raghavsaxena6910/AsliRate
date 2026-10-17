@@ -25,6 +25,9 @@ export function SiteHeader({ showDemoCta = true }: { showDemoCta?: boolean }) {
           <Button asChild variant="ghost" size="sm" className="hidden sm:inline-flex">
             <Link href="/#how-it-works">How it works</Link>
           </Button>
+          <Button asChild variant="ghost" size="sm">
+            <Link href="/login">Log in</Link>
+          </Button>
           {showDemoCta && (
             <Button asChild size="sm">
               <Link href="/demo">Try the demo</Link>
