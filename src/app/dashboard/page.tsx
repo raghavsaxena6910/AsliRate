@@ -9,6 +9,14 @@ import { getProfile, requireUser } from "@/lib/auth/dal";
 import { GST_STATES } from "@/lib/gst";
 import { createClient } from "@/lib/supabase/server";
 import { formatQty, toMilli } from "@/lib/engine/money";
+import { nextPathFor, type ComparisonStatus } from "@/lib/comparisons/schemas";
+
+const STATUS: Record<ComparisonStatus, { label: string; tone: string }> = {
+  draft: { label: "Add quotes", tone: "bg-paper-2 text-ink-2" },
+  reading: { label: "Add quotes", tone: "bg-paper-2 text-ink-2" },
+  review: { label: "Check numbers", tone: "bg-amber-2 text-amber" },
+  complete: { label: "Results ready", tone: "bg-brand-2 text-brand-deep" },
+};
 
 export const metadata: Metadata = { title: "Comparisons" };
 
@@ -53,6 +61,9 @@ async function Dashboard() {
             {profile.company_name}, {where}
           </p>
         </div>
+        <Button asChild>
+          <Link href="/comparisons/new">New comparison</Link>
+        </Button>
       </div>
 
       {error && <p className="text-danger">We couldn&rsquo;t load your comparisons. Refresh to try again.</p>}
@@ -60,15 +71,22 @@ async function Dashboard() {
       {comparisons && comparisons.length > 0 ? (
         <ul className="divide-y divide-line rounded-lg border border-line-2">
           {comparisons.map((c) => (
-            <li key={c.id} className="flex flex-wrap items-center gap-4 px-5 py-4">
+            <li key={c.id} className="relative flex flex-wrap items-center gap-4 px-5 py-4 hover:bg-paper-2">
               <div className="min-w-0 flex-1">
-                <p className="font-semibold text-ink">{c.item_description}</p>
+                <Link
+                  href={nextPathFor(c.id, c.status as ComparisonStatus)}
+                  className="font-semibold text-ink after:absolute after:inset-0 hover:underline"
+                >
+                  {c.item_description}
+                </Link>
                 <p className="text-sm text-ink-3">
                   {formatQty(toMilli(Number(c.qty_needed)))} {c.unit},{" "}
                   {new Date(c.created_at).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" })}
                 </p>
               </div>
-              <span className="rounded-full bg-paper-2 px-3 py-1 text-[13px] font-semibold text-ink-2">{c.status}</span>
+              <span className={`rounded-full px-3 py-1 text-[13px] font-semibold ${STATUS[c.status as ComparisonStatus]?.tone ?? ""}`}>
+                {STATUS[c.status as ComparisonStatus]?.label ?? c.status}
+              </span>
             </li>
           ))}
         </ul>
@@ -76,11 +94,17 @@ async function Dashboard() {
         <div className="rounded-lg border border-dashed border-line-2 px-6 py-12 text-center">
           <h2 className="text-xl font-bold text-ink">No comparisons yet</h2>
           <p className="mx-auto mt-2 max-w-[52ch] leading-relaxed text-ink-2">
-            Uploading your own quotes opens soon. Until then, see a full comparison with three sample quotes.
+            Start with what you&rsquo;re buying, then add 2 to 6 supplier quotes. Want to see how it works first? Try the demo
+            with three sample quotes.
           </p>
-          <Button asChild className="mt-6">
-            <Link href="/demo">Open the demo</Link>
-          </Button>
+          <div className="mt-6 flex flex-wrap justify-center gap-3">
+            <Button asChild>
+              <Link href="/comparisons/new">Start a comparison</Link>
+            </Button>
+            <Button asChild variant="outline">
+              <Link href="/demo">Open the demo</Link>
+            </Button>
+          </div>
         </div>
       )}
     </>

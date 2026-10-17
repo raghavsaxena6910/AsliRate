@@ -56,7 +56,7 @@ Without B's GSTIN, B becomes ₹97,500.00 and the order is A, B, C.
 2. ✅ Landing page, demo mode, sample quote files
 3. ✅ Deployed on Vercel at https://www.aslirate.in (aslirate.in redirects; DNS at GoDaddy: A @ 216.198.79.1, CNAME www → Vercel)
 4. ✅ Supabase auth, database (RLS on all tables), private storage
-5. AI extraction (server-only, Zod-validated) + review screen
+5. ✅ Real comparisons without AI: upload to private storage, rule-based reading of Excel/CSV/PDF/Word/pasted text (`src/lib/extract/`), review screen, saved results. AI extraction (server-only, Zod-validated) plugs into the same review step later
 6. Real results, AI rationale from engine numbers, Excel/PDF export, share link
 7. Dashboard, pricing + Pro waitlist (₹999/month), privacy and terms
 8. Launch checklist testing
