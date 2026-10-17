@@ -54,7 +54,7 @@ Without B's GSTIN, B becomes ₹97,500.00 and the order is A, B, C.
 
 1. ✅ Calculation engine + tests
 2. ✅ Landing page, demo mode, sample quote files
-3. Deploy to Vercel, connect aslirate.in (waiting on GitHub/Vercel accounts)
+3. ✅ Deployed on Vercel at https://www.aslirate.in (aslirate.in redirects; DNS at GoDaddy: A @ 216.198.79.1, CNAME www → Vercel)
 4. ✅ Supabase auth, database (RLS on all tables), private storage
 5. AI extraction (server-only, Zod-validated) + review screen
 6. Real results, AI rationale from engine numbers, Excel/PDF export, share link

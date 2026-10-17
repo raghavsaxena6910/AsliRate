@@ -20,7 +20,7 @@ async function siteOrigin() {
   if (origin) return origin;
   const host = h.get("x-forwarded-host") ?? h.get("host");
   const proto = h.get("x-forwarded-proto") ?? "https";
-  return host ? `${proto}://${host}` : (process.env.NEXT_PUBLIC_SITE_URL ?? "https://aslirate.in");
+  return host ? `${proto}://${host}` : (process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.aslirate.in");
 }
 
 /** Keep what the person typed (never the password) so a failed submit doesn't wipe the form. */

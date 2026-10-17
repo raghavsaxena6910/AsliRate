@@ -2,7 +2,7 @@ import type { Metadata, Viewport } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://aslirate.in"),
+  metadataBase: new URL("https://www.aslirate.in"),
   title: {
     default: "AsliRate — Compare supplier quotes. Find the real rate.",
     template: "%s | AsliRate",
@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "AsliRate — Compare supplier quotes. Find the real rate.",
     description: "Rank supplier quotes by real landed cost in rupees: GST credit, freight and minimum order included.",
-    url: "https://aslirate.in",
+    url: "https://www.aslirate.in",
     siteName: "AsliRate",
     locale: "en_IN",
     type: "website",
