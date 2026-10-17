@@ -1,0 +1,123 @@
+@import "tailwindcss";
+@import "@fontsource-variable/schibsted-grotesk";
+
+/*
+ * AsliRate tokens — borrowed from the Indian bill book: white paper, navy ink,
+ * carbon-copy blue for actions, rubber-stamp green for the winner, amber for
+ * things to check, and the pink margin rule used exactly once (the ledger).
+ */
+:root {
+  color-scheme: light;
+  --paper: #ffffff;
+  --paper-2: #f5f7fb;
+  --ink: #16202e;
+  --ink-2: #4a5568;
+  --ink-3: #6b7587;
+  --carbon: #2340a0;
+  --carbon-2: #e8edfa;
+  --stamp: #0e7a4b;
+  --stamp-2: #e5f4ec;
+  --amber: #a85a06;
+  --amber-2: #fdf3e3;
+  --danger: #b42318;
+  --danger-2: #fdeceb;
+  --margin-rule: #e6a2b4;
+  --line: #dde2ea;
+  --line-2: #c5ccd8;
+
+  /* shadcn/ui contract */
+  --radius: 0.5rem;
+  --background: var(--paper);
+  --foreground: var(--ink);
+  --card: var(--paper);
+  --card-foreground: var(--ink);
+  --primary: var(--carbon);
+  --primary-foreground: #ffffff;
+  --secondary: var(--paper-2);
+  --secondary-foreground: var(--ink);
+  --muted: var(--paper-2);
+  --muted-foreground: var(--ink-3);
+  --accent: var(--carbon-2);
+  --accent-foreground: var(--carbon);
+  --destructive: var(--danger);
+  --border: var(--line);
+  --input: var(--line-2);
+  --ring: var(--carbon);
+}
+
+@theme inline {
+  --font-sans: "Schibsted Grotesk Variable", ui-sans-serif, system-ui, sans-serif;
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-ink-3: var(--ink-3);
+  --color-paper-2: var(--paper-2);
+  --color-carbon: var(--carbon);
+  --color-carbon-2: var(--carbon-2);
+  --color-stamp: var(--stamp);
+  --color-stamp-2: var(--stamp-2);
+  --color-amber: var(--amber);
+  --color-amber-2: var(--amber-2);
+  --color-danger: var(--danger);
+  --color-danger-2: var(--danger-2);
+  --color-margin-rule: var(--margin-rule);
+  --color-line: var(--line);
+  --color-line-2: var(--line-2);
+
+  --radius-sm: calc(var(--radius) - 2px);
+  --radius-md: var(--radius);
+  --radius-lg: calc(var(--radius) + 4px);
+}
+
+@layer base {
+  * {
+    border-color: var(--border);
+  }
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    background: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-sans);
+    text-rendering: optimizeLegibility;
+  }
+  :focus-visible {
+    outline: 2px solid var(--carbon);
+    outline-offset: 2px;
+  }
+}
+
+/*
+ * Money and quantities. This font's tabular figures also widen "." and ",",
+ * which makes ₹82,627.12 read like a typewriter, so we keep proportional
+ * lining figures; right-aligned columns with fixed decimals still line up.
+ */
+.num {
+  font-variant-numeric: lining-nums;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
