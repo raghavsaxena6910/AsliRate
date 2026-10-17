@@ -2,6 +2,7 @@ import Link from "next/link";
 import { FileSpreadsheet, FileText, MessageSquareText } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { PriceTag } from "@/components/landing/price-tag";
+import { Layer } from "@/components/landing/layer";
 import { RateLedger } from "@/components/landing/rate-ledger";
 import { SiteFooter, SiteHeader } from "@/components/site/site-chrome";
 import { compareQuotes } from "@/lib/engine/compare";
@@ -85,7 +86,7 @@ export default function Home() {
       <SiteHeader />
       <main>
         {/* Hero */}
-        <section className="relative overflow-hidden">
+        <Layer index={0} className="overflow-hidden bg-white">
           <Swoosh className="pointer-events-none absolute top-24 right-[-30%] w-[900px] max-w-none sm:right-[-12%] lg:right-[-6%]" />
           <div className="relative mx-auto grid max-w-6xl gap-12 px-4 pt-14 pb-20 sm:px-6 lg:grid-cols-[1fr_1.05fr] lg:items-center lg:gap-16 lg:pt-20 lg:pb-28">
             <div>
@@ -119,10 +120,10 @@ export default function Home() {
             </div>
             <RateLedger />
           </div>
-        </section>
+        </Layer>
 
         {/* What the price leaves out */}
-        <section className="border-y border-line bg-paper-2">
+        <Layer index={1} className="border-t border-line bg-paper-2 md:border-t-0">
           <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6">
             <div className="max-w-2xl">
               <h2 className="text-[2rem] leading-tight font-extrabold tracking-[-0.025em] text-ink">
@@ -147,10 +148,10 @@ export default function Home() {
               </div>
             </dl>
           </div>
-        </section>
+        </Layer>
 
         {/* Price tag: numbers you can check */}
-        <section>
+        <Layer index={2} className="border-t border-line bg-white md:border-t-0">
           <div className="mx-auto grid max-w-6xl gap-16 px-4 py-24 sm:px-6 lg:grid-cols-2 lg:items-center">
             <div className="lg:order-2">
               <h2 className="text-[2rem] leading-tight font-extrabold tracking-[-0.025em] text-ink">
@@ -175,10 +176,10 @@ export default function Home() {
               <PriceTag />
             </div>
           </div>
-        </section>
+        </Layer>
 
         {/* How it works */}
-        <section id="how-it-works" className="scroll-mt-20 border-t border-line">
+        <Layer index={3} id="how-it-works" className="scroll-mt-20 border-t border-line bg-paper-2 md:border-t-0">
           <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6">
             <h2 className="text-[2rem] leading-tight font-extrabold tracking-[-0.025em] text-ink">How it works</h2>
             <ol className="mt-10 grid gap-10 md:grid-cols-3 md:gap-8">
@@ -193,10 +194,10 @@ export default function Home() {
               ))}
             </ol>
           </div>
-        </section>
+        </Layer>
 
         {/* Closing band */}
-        <section className="relative overflow-hidden bg-brand-deep text-white">
+        <Layer index={4} className="overflow-hidden bg-brand-deep text-white">
           <Swoosh className="pointer-events-none absolute -bottom-24 -left-20 w-[700px] max-w-none opacity-60" />
           <div className="relative mx-auto flex max-w-6xl flex-col items-start gap-6 px-4 py-16 sm:px-6 md:flex-row md:items-center md:justify-between">
             <div>
@@ -222,7 +223,7 @@ export default function Home() {
               </Button>
             </div>
           </div>
-        </section>
+        </Layer>
       </main>
       <SiteFooter />
     </>
