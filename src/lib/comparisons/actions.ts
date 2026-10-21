@@ -20,6 +20,8 @@ import {
   type ExtractedRecord,
 } from "./schemas";
 import { fieldErrors, type FieldErrors } from "@/lib/auth/schemas";
+import { getPlan } from "@/lib/billing/server";
+import { LIMIT_MESSAGE } from "@/lib/billing/rules";
 
 async function session() {
   const supabase = await createClient();
@@ -43,6 +45,8 @@ export async function createComparison(_prev: NewComparisonState, formData: Form
   if (!parsed.success) return { errors: fieldErrors(parsed.error), values };
 
   const { supabase, userId } = await session();
+  const plan = await getPlan(userId);
+  if (!plan.pro && plan.used >= plan.limit) return { message: LIMIT_MESSAGE, values };
   const { data, error } = await supabase
     .from("comparisons")
     .insert({ ...parsed.data, specification: parsed.data.specification || null, deliver_to: parsed.data.deliver_to || null, user_id: userId })
@@ -181,7 +185,7 @@ export async function readQuotes(comparisonId: string): Promise<ActionResult> {
 
 /* ---------------- confirm and compare ---------------- */
 
-export type ReviewState = { errors?: Record<string, FormErrors>; message?: string };
+export type ReviewState = { errors?: Record<string, FormErrors>; message?: string; upgrade?: boolean };
 
 export async function confirmAndCompare(comparisonId: string, rawForms: unknown): Promise<ReviewState> {
   if (!uuid.safeParse(comparisonId).success) return { message: "Comparison not found." };
@@ -245,6 +249,7 @@ export async function confirmAndCompare(comparisonId: string, rawForms: unknown)
     },
     { onConflict: "comparison_id" },
   );
+  if (error?.message.includes("free plan limit")) return { message: LIMIT_MESSAGE, upgrade: true };
   if (error) return { message: "We couldn't save the results. Try again." };
   await supabase.from("comparisons").update({ status: "complete" }).eq("id", comparisonId);
   revalidatePath("/dashboard");

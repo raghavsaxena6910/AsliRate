@@ -9,6 +9,8 @@ import { getProfile, requireUser } from "@/lib/auth/dal";
 import { GST_STATES } from "@/lib/gst";
 import { createClient } from "@/lib/supabase/server";
 import { formatQty, toMilli } from "@/lib/engine/money";
+import { getPlan } from "@/lib/billing/server";
+import { PlanStrip } from "@/components/billing/plan-strip";
 import { nextPathFor, type ComparisonStatus } from "@/lib/comparisons/schemas";
 
 const STATUS: Record<ComparisonStatus, { label: string; tone: string }> = {
@@ -24,7 +26,7 @@ export default function DashboardPage() {
   return (
     <>
       <AppHeader />
-      <main className="flex-1">
+      <main className="flex-1" data-clarity-mask="true">
         <div className="mx-auto max-w-5xl px-4 py-12 sm:px-6">
           <Suspense fallback={<p className="text-ink-3">Loading your comparisons…</p>}>
             <Dashboard />
@@ -42,11 +44,14 @@ async function Dashboard() {
   if (!profile?.onboarded_at) redirect("/onboarding");
 
   const supabase = await createClient();
-  const { data: comparisons, error } = await supabase
-    .from("comparisons")
-    .select("id, item_description, qty_needed, unit, status, created_at")
-    .order("created_at", { ascending: false })
-    .limit(50);
+  const [{ data: comparisons, error }, plan] = await Promise.all([
+    supabase
+      .from("comparisons")
+      .select("id, item_description, qty_needed, unit, status, created_at")
+      .order("created_at", { ascending: false })
+      .limit(50),
+    getPlan(user.id),
+  ]);
 
   const where = profile.gst_registered
     ? `GST-registered${profile.state_code ? ` in ${GST_STATES[profile.state_code] ?? profile.state_code}` : ""}`
@@ -65,6 +70,8 @@ async function Dashboard() {
           <Link href="/comparisons/new">New comparison</Link>
         </Button>
       </div>
+
+      <PlanStrip plan={plan} />
 
       {error && <p className="text-danger">We couldn&rsquo;t load your comparisons. Refresh to try again.</p>}
 

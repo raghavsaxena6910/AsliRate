@@ -18,6 +18,9 @@ export function AppHeader() {
           >
             Company
           </Link>
+          <Link href="/billing" className="hidden rounded-md px-3 py-2 text-[15px] font-medium text-ink-2 hover:bg-paper-2 hover:text-ink sm:inline-block">
+            Plan
+          </Link>
           <form action={signOut}>
             <button
               type="submit"

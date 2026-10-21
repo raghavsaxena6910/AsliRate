@@ -1,17 +1,26 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { LegalPage } from "@/components/site/legal-page";
 
 export const metadata: Metadata = { title: "Terms of use" };
 
 export default function TermsPage() {
   return (
-    <LegalPage title="Terms of use" updated="17 October 2026">
+    <LegalPage title="Terms of use" updated="22 October 2026">
       <p>By creating an account or using AsliRate, you agree to these terms.</p>
 
       <h2>What AsliRate is</h2>
       <p>
         A tool that compares supplier quotes and estimates the real cost of each, including GST credit, freight and minimum
-        order quantities. It is in beta and free to use while in beta.
+        order quantities. It is in beta.
+      </p>
+
+      <h2>Plans and payment</h2>
+      <p>
+        The Free plan includes 3 comparisons a month. Pro costs ₹999 a month plus GST, renews monthly until you cancel, and
+        includes unlimited comparisons. Payments are processed by Dodo Payments, which acts as merchant of record. Cancelling
+        and refunds are covered by our <Link href="/refunds">refund and cancellation policy</Link>. If we change the price, we&rsquo;ll
+        tell Pro customers by email at least 30 days before it applies to them.
       </p>
 
       <h2>It supports your decision; it doesn&rsquo;t make it</h2>

@@ -26,11 +26,17 @@ export function SiteHeader({ showDemoCta = true }: { showDemoCta?: boolean }) {
             <Link href="/#how-it-works">How it works</Link>
           </Button>
           <Button asChild variant="ghost" size="sm">
+            <Link href="/pricing">Pricing</Link>
+          </Button>
+          <Button asChild variant="ghost" size="sm">
             <Link href="/login">Log in</Link>
           </Button>
           {showDemoCta && (
             <Button asChild size="sm">
-              <Link href="/demo">Try the demo</Link>
+              <Link href="/demo">
+                <span className="sm:hidden">Demo</span>
+                <span className="hidden sm:inline">Try the demo</span>
+              </Link>
             </Button>
           )}
         </nav>
@@ -51,11 +57,20 @@ export function SiteFooter() {
           <Link href="/demo" className="hover:text-ink">
             Demo
           </Link>
+          <Link href="/pricing" className="hover:text-ink">
+            Pricing
+          </Link>
           <Link href="/privacy" className="hover:text-ink">
             Privacy
           </Link>
           <Link href="/terms" className="hover:text-ink">
             Terms
+          </Link>
+          <Link href="/refunds" className="hover:text-ink">
+            Refunds
+          </Link>
+          <Link href="/contact" className="hover:text-ink">
+            Contact
           </Link>
           <span>© 2026 AsliRate</span>
         </nav>

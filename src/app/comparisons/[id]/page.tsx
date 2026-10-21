@@ -22,7 +22,7 @@ export default function ResultsPage({ params }: { params: Promise<{ id: string }
   return (
     <>
       <AppHeader />
-      <main className="flex-1">
+      <main className="flex-1" data-clarity-mask="true">
         <div className="mx-auto max-w-5xl px-4 py-12 sm:px-6">
           <StepBar current={3} />
           <Suspense fallback={<p className="text-ink-3">Loading the results…</p>}>

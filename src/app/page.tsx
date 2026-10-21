@@ -92,7 +92,7 @@ export default function Home() {
             <div>
               <p className="inline-flex items-center gap-2 rounded-full border border-brand/25 bg-brand-2 px-3 py-1 text-[13px] font-semibold text-brand-deep">
                 <span aria-hidden className="size-1.5 rounded-full bg-brand-bright" />
-                Free while in beta
+                3 free comparisons every month
               </p>
               <h1 className="mt-5 max-w-[15ch] text-[2.7rem] leading-[1.02] font-extrabold tracking-[-0.035em] text-ink sm:text-[3.6rem]">
                 The lowest quote isn&rsquo;t always the lowest cost.

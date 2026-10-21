@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
+import { Clarity } from "@/components/site/clarity";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.aslirate.in"),
@@ -17,6 +18,10 @@ export const metadata: Metadata = {
     locale: "en_IN",
     type: "website",
   },
+  // Google Search Console, if verified with an HTML tag instead of a DNS record.
+  verification: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION
+    ? { google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION }
+    : undefined,
 };
 
 export const viewport: Viewport = {
@@ -26,7 +31,10 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="en-IN" className="h-full antialiased">
-      <body className="flex min-h-full flex-col">{children}</body>
+      <body className="flex min-h-full flex-col">
+        {children}
+        <Clarity />
+      </body>
     </html>
   );
 }

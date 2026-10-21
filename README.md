@@ -58,7 +58,19 @@ Without B's GSTIN, B becomes ₹97,500.00 and the order is A, B, C.
 4. ✅ Supabase auth, database (RLS on all tables), private storage
 5. ✅ Real comparisons without AI: upload to private storage, rule-based reading of Excel/CSV/PDF/Word/pasted text (`src/lib/extract/`), review screen, saved results. AI extraction (server-only, Zod-validated) plugs into the same review step later
 6. Real results, AI rationale from engine numbers, Excel/PDF export, share link
-7. Dashboard, pricing + Pro waitlist (₹999/month), privacy and terms
+7. ✅ Dashboard, privacy and terms. ✅ Pricing and payments (user asked to charge): Free = 3 comparisons/month (enforced by the `results_free_limit` DB trigger), Pro = ₹999/month + GST through Dodo Payments (`src/lib/billing/`, `/pricing`, `/billing`, webhook at `/api/webhooks/dodo`), refund and contact pages. Microsoft Clarity on public pages (app pages masked), sitemap and robots
+
+### Billing settings (Vercel → Settings → Environment Variables, then redeploy)
+
+| Name | Where it comes from | Secret? |
+|---|---|---|
+| `DODO_PAYMENTS_API_KEY` | Dodo → Developer → API Keys (write access on) | Yes |
+| `DODO_PAYMENTS_WEBHOOK_KEY` | Dodo → Developer → Webhooks, endpoint `https://www.aslirate.in/api/webhooks/dodo` | Yes |
+| `DODO_PRO_PRODUCT_ID` | Dodo → Products → Pro (`pdt_…`) | No |
+| `DODO_PAYMENTS_ENVIRONMENT` | `test_mode` or `live_mode` (default `test_mode`) | No |
+| `SUPABASE_SECRET_KEY` | Supabase → Project Settings → API Keys → secret key | Yes |
+| `NEXT_PUBLIC_CLARITY_PROJECT_ID` | Clarity → Settings → Overview | No |
+| `NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION` | Only if Search Console is verified by HTML tag instead of DNS | No |
 8. Launch checklist testing
 
 ## Later (out of v1 scope)
@@ -70,7 +82,8 @@ Without B's GSTIN, B becomes ₹97,500.00 and the order is A, B, C.
 - Multi-item quotes and comparing a basket of items
 - "What if" toggles directly on the results page
 - Hindi interface
-- Hosting stays on Vercel Hobby. Before showing a paid price or taking payments, revisit: Hobby's fair-use terms are non-commercial only (options: confirm with Vercel support, waitlist without a price, or upgrade at first paying customer)
+- Hosting: Vercel Hobby is non-commercial only. Upgrade to Vercel Pro before switching Dodo to live mode / taking the first real payment
+- Excel/PDF export and share link (step 6) could become Pro-only features
 
 ## Prototype
 

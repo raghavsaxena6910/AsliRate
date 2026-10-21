@@ -14,6 +14,7 @@ export function ReviewClient({ comparisonId, unit, items }: { comparisonId: stri
   const [forms, setForms] = useState<QuoteForm[]>(items.map((i) => i.form));
   const [errors, setErrors] = useState<Record<string, FormErrors>>({});
   const [message, setMessage] = useState<string | null>(null);
+  const [upgrade, setUpgrade] = useState(false);
   const [pending, start] = useTransition();
 
   const toCheck = forms.reduce((n, f) => n + Object.values(f.confidence).filter((c) => c != null && c < LOW_CONFIDENCE_THRESHOLD).length, 0);
@@ -26,6 +27,7 @@ export function ReviewClient({ comparisonId, unit, items }: { comparisonId: stri
       if (!res) return;
       setErrors(res.errors ?? {});
       if (res.message) setMessage(res.message);
+      setUpgrade(Boolean(res.upgrade));
       if (res.errors) requestAnimationFrame(() => document.querySelector(".text-danger")?.scrollIntoView({ block: "center", behavior: "smooth" }));
     });
   }
@@ -87,6 +89,15 @@ export function ReviewClient({ comparisonId, unit, items }: { comparisonId: stri
       {(errorCount > 0 || message) && (
         <p role="alert" className="mt-8 font-medium text-danger">
           {message ?? `Fix the ${errorCount === 1 ? "highlighted field" : `${errorCount} highlighted fields`} to compare.`}
+          {upgrade && (
+            <>
+              {" "}
+              <Link href="/billing" className="font-semibold underline">
+                See Pro
+              </Link>
+              . Your numbers are saved.
+            </>
+          )}
         </p>
       )}
 

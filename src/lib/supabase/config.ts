@@ -13,7 +13,7 @@ export const SUPABASE_PUBLISHABLE_KEY =
   process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ?? "sb_publishable_jN0rFAjfDadSMkmHfSTepw_DJwb1MDT";
 
 /** Pages that need a signed-in user. */
-export const PROTECTED_PREFIXES = ["/dashboard", "/onboarding", "/comparisons", "/settings"];
+export const PROTECTED_PREFIXES = ["/dashboard", "/onboarding", "/comparisons", "/settings", "/billing"];
 /** Pages a signed-in user doesn't need (sent to the dashboard instead). */
 export const AUTH_PAGES = ["/login", "/signup"];
 

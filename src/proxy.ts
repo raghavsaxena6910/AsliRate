@@ -8,6 +8,6 @@ export async function proxy(request: NextRequest) {
 export const config = {
   matcher: [
     // Everything except static files, images and the sample quotes.
-    "/((?!_next/static|_next/image|favicon.ico|samples/|ingest/|.*\\.(?:svg|png|jpg|jpeg|gif|webp|pdf|xlsx)$).*)",
+    "/((?!_next/static|_next/image|favicon.ico|samples/|ingest/|api/webhooks/|.*\\.(?:svg|png|jpg|jpeg|gif|webp|pdf|xlsx)$).*)",
   ],
 };

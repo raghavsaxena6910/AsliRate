@@ -11,7 +11,7 @@ export default function OnboardingPage() {
   return (
     <>
       <AppHeader />
-      <main className="flex-1">
+      <main className="flex-1" data-clarity-mask="true">
         <div className="mx-auto max-w-2xl px-4 py-12 sm:px-6">
           <h1 className="text-[2rem] leading-tight font-bold tracking-[-0.02em] text-ink">About your company</h1>
           <p className="mt-2 mb-8 max-w-[60ch] text-lg leading-relaxed text-ink-2">

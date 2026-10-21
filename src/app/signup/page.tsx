@@ -12,7 +12,7 @@ export default function SignupPage() {
         <div className="mx-auto grid max-w-5xl gap-12 px-4 py-12 sm:px-6 lg:grid-cols-[1fr_0.9fr] lg:py-16">
           <div className="max-w-lg">
             <h1 className="text-[2rem] leading-tight font-bold tracking-[-0.02em] text-ink">Create your AsliRate account</h1>
-            <p className="mt-2 mb-8 text-lg text-ink-2">Free during beta. Compare up to 6 supplier quotes at a time.</p>
+            <p className="mt-2 mb-8 text-lg text-ink-2">Free for 3 comparisons a month, up to 6 quotes each. No card needed.</p>
             <SignupForm />
           </div>
           <aside className="self-start rounded-xl bg-paper-2 p-7">
