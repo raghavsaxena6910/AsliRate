@@ -57,7 +57,7 @@ Without B's GSTIN, B becomes ₹97,500.00 and the order is A, B, C.
 3. ✅ Deployed on Vercel at https://www.aslirate.in (aslirate.in redirects; DNS at GoDaddy: A @ 216.198.79.1, CNAME www → Vercel)
 4. ✅ Supabase auth, database (RLS on all tables), private storage
 5. ✅ Real comparisons without AI: upload to private storage, rule-based reading of Excel/CSV/PDF/Word/pasted text (`src/lib/extract/`), review screen, saved results. AI extraction (server-only, Zod-validated) plugs into the same review step later
-6. Real results, AI rationale from engine numbers, Excel/PDF export, share link
+6. ✅ Results with rationale from engine numbers, Excel export, print/PDF, read-only share link (`/s/[token]`, server-only lookup), delete. ✅ SEO: `/blog` guides (examples tested against the engine) and a free `/tools/landed-cost-calculator`. Free-plan usage is logged in `comparison_runs` so deleting doesn't reset it
 7. ✅ Dashboard, privacy and terms. ✅ Pricing and payments (user asked to charge): Free = 3 comparisons/month (enforced by the `results_free_limit` DB trigger), Pro = ₹999/month + GST through Dodo Payments (`src/lib/billing/`, `/pricing`, `/billing`, webhook at `/api/webhooks/dodo`), refund and contact pages. Microsoft Clarity on public pages (app pages masked), sitemap and robots
 
 ### Billing settings (Vercel → Settings → Environment Variables, then redeploy)

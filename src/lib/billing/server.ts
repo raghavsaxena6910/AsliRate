@@ -1,9 +1,8 @@
 import "server-only";
 import DodoPayments from "dodopayments";
 import type { Subscription } from "dodopayments/resources/subscriptions";
-import { createClient as createSupabaseClient } from "@supabase/supabase-js";
 import { createClient } from "@/lib/supabase/server";
-import { SUPABASE_URL } from "@/lib/supabase/config";
+import { adminClient } from "@/lib/supabase/admin";
 import { FREE_MONTHLY_LIMIT, isPro, monthStartInIndia, type SubscriptionRow } from "./rules";
 
 /*
@@ -36,12 +35,7 @@ export function dodo() {
   });
 }
 
-/** Supabase with the secret key. Server only, for writing subscriptions after Dodo confirms them. */
-function admin() {
-  const key = process.env.SUPABASE_SECRET_KEY ?? process.env.SUPABASE_SERVICE_ROLE_KEY;
-  if (!key) throw new Error("SUPABASE_SECRET_KEY is not set");
-  return createSupabaseClient(SUPABASE_URL, key, { auth: { persistSession: false, autoRefreshToken: false } });
-}
+const admin = adminClient;
 
 /**
  * Save what Dodo says about a subscription. Events can arrive out of order, so

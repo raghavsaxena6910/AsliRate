@@ -15,6 +15,7 @@ as $$
   where length(token) >= 20 and c.share_token = token and c.status = 'complete';
 $$;
 revoke execute on function public.get_shared_result(text) from public;
+-- Called only by the server with the secret key (see 20261022000003).
 grant execute on function public.get_shared_result(text) to anon, authenticated;
 
 -- 2. Usage log for the free plan, so deleting a comparison doesn't give a free run back.

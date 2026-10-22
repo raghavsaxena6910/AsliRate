@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { compareQuotes, formatDate } from "@/lib/engine/compare";
 import { formatQty } from "@/lib/engine/money";
 import type { ComparisonInput } from "@/lib/engine/schema";
-import { createClient } from "@/lib/supabase/server";
+import { adminClient } from "@/lib/supabase/admin";
 
 export const metadata: Metadata = {
   title: "Shared supplier comparison",
@@ -42,8 +42,8 @@ export default function SharedPage({ params }: { params: Promise<{ token: string
 async function Shared({ params }: { params: Promise<{ token: string }> }) {
   const { token } = await params;
   if (!/^[A-Za-z0-9_-]{20,64}$/.test(token)) notFound();
-  const supabase = await createClient();
-  const { data } = await supabase.rpc("get_shared_result", { token });
+  // Only the server can call this function; the token is checked inside it.
+  const { data } = await adminClient().rpc("get_shared_result", { token });
   const row = Array.isArray(data) ? data[0] : null;
   if (!row) notFound();
 
