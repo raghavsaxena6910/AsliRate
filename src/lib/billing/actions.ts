@@ -28,9 +28,9 @@ export async function startCheckout(): Promise<BillingState> {
     const session = await dodo().checkoutSessions.create({
       product_cart: [{ product_id: process.env.DODO_PRO_PRODUCT_ID!, quantity: 1 }],
       customer: { email: user.email ?? "", name: profile?.full_name || profile?.company_name || user.email || "AsliRate customer" },
-      customer_business_name: profile?.company_name ?? undefined,
       billing_address: { country: "IN" },
-      // Business customers can add their GSTIN to get a GST invoice.
+      // Business customers can add their company name and GSTIN on the checkout page.
+      // (Dodo rejects a prefilled business name without a tax ID, so we don't prefill it.)
       feature_flags: { allow_tax_id: true },
       metadata: { user_id: user.id },
       return_url: `${await origin()}/billing?checkout=done`,
