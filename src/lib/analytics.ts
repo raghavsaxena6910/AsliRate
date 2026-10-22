@@ -14,7 +14,27 @@ export type AnalyticsEvent =
   | "demo_quotes_compared"
   | "signup_submitted"
   | "login_succeeded"
-  | "profile_saved";
+  | "profile_saved"
+  | "comparison_started"
+  | "quotes_read"
+  | "results_viewed"
+  | "free_limit_reached"
+  | "upgrade_clicked"
+  | "pro_activated"
+  | "share_link_created"
+  | "excel_downloaded"
+  | "results_printed"
+  | "calculator_used";
+
+/** Link this browser's events to the signed-in account (by id only, never email). */
+export function identify(userId: string) {
+  if (!analyticsEnabled || typeof window === "undefined") return;
+  try {
+    posthog.identify(userId);
+  } catch {
+    // ignore
+  }
+}
 
 /** Fire-and-forget event; never throws, never sends quote contents. */
 export function track(event: AnalyticsEvent, props?: Record<string, string | number | boolean>) {

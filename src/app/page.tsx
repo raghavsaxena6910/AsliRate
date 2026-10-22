@@ -53,6 +53,33 @@ const STEPS = [
   },
 ];
 
+const HOME_JSON_LD = [
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    name: "AsliRate",
+    url: "https://www.aslirate.in",
+    logo: "https://www.aslirate.in/icon.png",
+    email: "raghavjsaxena@gmail.com",
+    founder: { "@type": "Person", name: "Raghav Saxena" },
+    areaServed: "IN",
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    name: "AsliRate",
+    url: "https://www.aslirate.in",
+    applicationCategory: "BusinessApplication",
+    operatingSystem: "Web",
+    description:
+      "Compare supplier quotations by real landed cost in rupees: GST input credit, freight, minimum order and pack size included.",
+    offers: [
+      { "@type": "Offer", name: "Free", price: "0", priceCurrency: "INR" },
+      { "@type": "Offer", name: "Pro", price: "999", priceCurrency: "INR", description: "Per month, plus GST" },
+    ],
+  },
+];
+
 const FORMATS = [
   { icon: FileText, label: "PDF quotations" },
   { icon: MessageSquareText, label: "WhatsApp screenshots" },
@@ -85,6 +112,7 @@ export default function Home() {
     <>
       <SiteHeader />
       <main>
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(HOME_JSON_LD) }} />
         {/* Hero */}
         <Layer index={0} className="overflow-hidden bg-white">
           <Swoosh className="pointer-events-none absolute top-24 right-[-30%] w-[900px] max-w-none sm:right-[-12%] lg:right-[-6%]" />
@@ -193,6 +221,17 @@ export default function Home() {
                 </li>
               ))}
             </ol>
+            <p className="mt-12 max-w-[70ch] border-t border-line pt-6 text-ink-2">
+              Only have one quote? Try the free{" "}
+              <Link href="/tools/landed-cost-calculator" className="font-semibold text-brand underline underline-offset-2">
+                landed cost calculator
+              </Link>
+              , or read the{" "}
+              <Link href="/blog" className="font-semibold text-brand underline underline-offset-2">
+                guides on GST credit, MOQ and freight terms
+              </Link>
+              .
+            </p>
           </div>
         </Layer>
 

@@ -2,6 +2,7 @@ import Link from "next/link";
 import type { Plan } from "@/lib/billing/server";
 import { nextResetLabel } from "@/lib/billing/rules";
 import { Button } from "@/components/ui/button";
+import { TrackOnMount } from "@/components/analytics/track-on-mount";
 
 /** One line under the dashboard heading: what plan you're on and what's left. */
 export function PlanStrip({ plan }: { plan: Plan }) {
@@ -31,6 +32,7 @@ export function PlanStrip({ plan }: { plan: Plan }) {
 export function LimitReached() {
   return (
     <div className="rounded-2xl border-2 border-brand bg-white p-7">
+      <TrackOnMount event="free_limit_reached" />
       <h2 className="text-xl font-bold text-ink">You&rsquo;ve used this month&rsquo;s 3 free comparisons</h2>
       <p className="mt-2 leading-relaxed text-ink-2">
         Your free allowance resets on {nextResetLabel()}. Pro gives you unlimited comparisons for ₹999 a month, and you can

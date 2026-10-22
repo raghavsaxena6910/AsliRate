@@ -5,6 +5,7 @@ import { createComparison, type NewComparisonState } from "@/lib/comparisons/act
 import { Field, fieldProps, FormMessage } from "@/components/forms/field";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { track } from "@/lib/analytics";
 
 export function NewComparisonForm({ gstRegistered }: { gstRegistered: boolean }) {
   const [state, action, pending] = useActionState<NewComparisonState, FormData>(createComparison, {});
@@ -12,7 +13,7 @@ export function NewComparisonForm({ gstRegistered }: { gstRegistered: boolean })
   const v = state.values ?? {};
 
   return (
-    <form action={action} noValidate className="grid gap-6">
+    <form action={action} noValidate className="grid gap-6" onSubmit={() => track("comparison_started")}>
       <FormMessage>{state.message}</FormMessage>
       <Field id="item_description" label="What are you buying?" error={e.item_description}>
         <Input

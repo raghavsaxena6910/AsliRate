@@ -8,6 +8,11 @@ const nextConfig: NextConfig = {
   cacheComponents: true,
   partialPrefetching: true,
   skipTrailingSlashRedirect: true, // required by PostHog's API paths
+  // Share-card images read these files at request time; make sure Vercel ships them.
+  outputFileTracingIncludes: {
+    "/blog/**": ["./src/assets/aslirate-mark.png", "./node_modules/@fontsource/schibsted-grotesk/files/schibsted-grotesk-latin-{500,800}-normal.woff"],
+    "/tools/**": ["./src/assets/aslirate-mark.png", "./node_modules/@fontsource/schibsted-grotesk/files/schibsted-grotesk-latin-{500,800}-normal.woff"],
+  },
   async rewrites() {
     return [
       { source: "/ingest/static/:path*", destination: `https://${region}-assets.i.posthog.com/static/:path*` },

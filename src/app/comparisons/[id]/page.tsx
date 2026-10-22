@@ -6,6 +6,7 @@ import { ComparisonSummary } from "@/components/comparisons/comparison-summary";
 import { StepBar } from "@/components/comparisons/step-bar";
 import { ResultsView } from "@/components/results/results-view";
 import { ResultActions } from "@/components/results/result-actions";
+import { TrackOnMount } from "@/components/analytics/track-on-mount";
 import { AppHeader } from "@/components/site/app-header";
 import { SiteFooter } from "@/components/site/site-chrome";
 import { Button } from "@/components/ui/button";
@@ -71,6 +72,10 @@ async function Results({ params }: { params: Promise<{ id: string }> }) {
       </div>
       <ComparisonSummary comparison={comparison} className="mb-10" />
       <ResultsView result={result} rationale={saved.rationale ?? undefined} />
+      <TrackOnMount
+        event="results_viewed"
+        props={{ quotes: result.results.length, buyer_gst_registered: result.input.buyer_gst_registered, cheapest_rate_won: result.results[0].quote_id === [...result.input.quotes].sort((a, b) => a.unit_price_paise / a.price_basis - b.unit_price_paise / b.price_basis)[0].id }}
+      />
       <div className="mt-12">
         <ResultActions comparisonId={comparison.id} initialToken={comparison.share_token} />
       </div>

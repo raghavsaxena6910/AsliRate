@@ -1,6 +1,7 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { track } from "@/lib/analytics";
 import Link from "next/link";
 import { AlertTriangle } from "lucide-react";
 import { compareQuotes } from "@/lib/engine/compare";
@@ -77,6 +78,20 @@ export function LandedCostCalculator() {
       return { error: "Some of the numbers can't be used. Use at most 3 decimal places for quantities." };
     }
   }, [unit, qty, price, gstRate, gst, supplierGstin, registered, freightMode, freight, moq, pack]);
+
+  // Count one "used" event the first time someone changes any number.
+  const first = useRef(true);
+  const tracked = useRef(false);
+  useEffect(() => {
+    if (first.current) {
+      first.current = false;
+      return;
+    }
+    if (!tracked.current) {
+      tracked.current = true;
+      track("calculator_used");
+    }
+  }, [out]);
 
   const r = "result" in out ? out.result : null;
   const u = unit.trim() || "pieces";

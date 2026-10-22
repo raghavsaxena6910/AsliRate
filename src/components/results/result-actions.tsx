@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { Check, Copy, Download, Link2, Printer, Trash2 } from "lucide-react";
 import { deleteComparison, setSharing } from "@/lib/comparisons/actions";
 import { Button } from "@/components/ui/button";
+import { track } from "@/lib/analytics";
 
 /** Share link, Excel download, print and delete for one finished comparison. */
 export function ResultActions({ comparisonId, initialToken }: { comparisonId: string; initialToken: string | null }) {
@@ -24,6 +25,7 @@ export function ResultActions({ comparisonId, initialToken }: { comparisonId: st
       if (!res.ok) return setMessage(res.message);
       setToken(res.token);
       setCopied(false);
+      if (on) track("share_link_created");
     });
   }
 
@@ -52,11 +54,14 @@ export function ResultActions({ comparisonId, initialToken }: { comparisonId: st
       </h2>
       <div className="mt-4 flex flex-wrap gap-2">
         <Button asChild variant="outline" size="sm">
-          <a href={`/comparisons/${comparisonId}/export`} download>
+          <a href={`/comparisons/${comparisonId}/export`} download onClick={() => track("excel_downloaded")}>
             <Download aria-hidden /> Download Excel
           </a>
         </Button>
-        <Button variant="outline" size="sm" onClick={() => window.print()}>
+        <Button variant="outline" size="sm" onClick={() => {
+            track("results_printed");
+            window.print();
+          }}>
           <Printer aria-hidden /> Print or save as PDF
         </Button>
         {!token && (

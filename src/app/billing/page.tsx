@@ -6,6 +6,7 @@ import { Check } from "lucide-react";
 import { AppHeader } from "@/components/site/app-header";
 import { SiteFooter } from "@/components/site/site-chrome";
 import { BillingButton } from "@/components/billing/billing-button";
+import { TrackOnMount } from "@/components/analytics/track-on-mount";
 import { requireUser } from "@/lib/auth/dal";
 import { openBillingPortal, startCheckout } from "@/lib/billing/actions";
 import { billingConfigured, dodo, getPlan, saveSubscription } from "@/lib/billing/server";
@@ -58,6 +59,7 @@ async function Billing({ searchParams }: { searchParams: Search }) {
     const end = fmtDate(plan.periodEnd);
     return (
       <section className="mt-8 rounded-2xl border-2 border-brand bg-white p-7">
+        {justPaid && <TrackOnMount event="pro_activated" />}
         {justPaid && (
           <p role="status" className="mb-5 rounded-md bg-brand-2 px-4 py-3 font-semibold text-brand-deep">
             Payment received. Welcome to Pro.
@@ -128,7 +130,7 @@ async function Billing({ searchParams }: { searchParams: Search }) {
         <div className="mt-6">
           {billingConfigured() ? (
             <>
-              <BillingButton action={startCheckout} label="Upgrade to Pro" />
+              <BillingButton action={startCheckout} label="Upgrade to Pro" event="upgrade_clicked" />
               <p className="mt-2 text-sm text-ink-3">
                 Pay by UPI or card on Dodo Payments&rsquo; secure page. You can add your GSTIN there for the invoice.{" "}
                 <Link href="/refunds" className="underline">

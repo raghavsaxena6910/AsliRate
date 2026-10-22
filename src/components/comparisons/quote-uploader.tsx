@@ -8,6 +8,7 @@ import { ACCEPTED_EXTENSIONS, extensionOf, kindOf, mimeFor, type FileKind } from
 import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { track } from "@/lib/analytics";
 
 export interface UploadedQuote {
   id: string;
@@ -117,6 +118,7 @@ export function QuoteUploader({
   function read() {
     setMessage(null);
     if (saved.length < MIN_QUOTES) return setMessage(`Add at least ${MIN_QUOTES} quotes to compare.`);
+    track("quotes_read", { quotes: saved.length, files: saved.filter((i) => i.kind !== "pasted").length });
     startReading(async () => {
       const res = await readQuotes(comparisonId);
       if (res && !res.ok) setMessage(res.message);

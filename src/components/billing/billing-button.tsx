@@ -3,20 +3,23 @@
 import { useActionState } from "react";
 import { Loader2 } from "lucide-react";
 import type { BillingState } from "@/lib/billing/actions";
+import { track, type AnalyticsEvent } from "@/lib/analytics";
 import { Button } from "@/components/ui/button";
 
 export function BillingButton({
   action,
   label,
   variant = "default",
+  event,
 }: {
+  event?: AnalyticsEvent;
   action: (prev: BillingState, form: FormData) => Promise<BillingState>;
   label: string;
   variant?: "default" | "outline";
 }) {
   const [state, formAction, pending] = useActionState(action, {});
   return (
-    <form action={formAction}>
+    <form action={formAction} onSubmit={() => event && track(event)}>
       <Button type="submit" size="lg" variant={variant} disabled={pending}>
         {pending ? (
           <>

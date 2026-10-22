@@ -12,6 +12,7 @@ import { formatQty, toMilli } from "@/lib/engine/money";
 import { getPlan } from "@/lib/billing/server";
 import { PlanStrip } from "@/components/billing/plan-strip";
 import { DeleteRowButton } from "@/components/comparisons/delete-row-button";
+import { TrackOnMount } from "@/components/analytics/track-on-mount";
 import { nextPathFor, type ComparisonStatus } from "@/lib/comparisons/schemas";
 
 const STATUS: Record<ComparisonStatus, { label: string; tone: string }> = {
@@ -72,6 +73,7 @@ async function Dashboard() {
         </Button>
       </div>
 
+      <TrackOnMount userId={user.id} />
       <PlanStrip plan={plan} />
 
       {error && <p className="text-danger">We couldn&rsquo;t load your comparisons. Refresh to try again.</p>}

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import { ProfileForm } from "@/components/auth/profile-form";
+import { YourData } from "@/components/account/your-data";
 import { AppHeader } from "@/components/site/app-header";
 import { SiteFooter } from "@/components/site/site-chrome";
 import { getProfile, requireUser } from "@/lib/auth/dal";
@@ -34,5 +35,10 @@ async function ProfileLoader() {
   if (!profile) {
     return <p className="text-danger">We couldn&rsquo;t find your account details. Log out and log in again.</p>;
   }
-  return <ProfileForm profile={profile} firstTime={!profile.onboarded_at} />;
+  return (
+    <>
+      <ProfileForm profile={profile} firstTime={!profile.onboarded_at} />
+      {profile.onboarded_at && <YourData />}
+    </>
+  );
 }

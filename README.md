@@ -71,7 +71,7 @@ Without B's GSTIN, B becomes ₹97,500.00 and the order is A, B, C.
 | `SUPABASE_SECRET_KEY` | Supabase → Project Settings → API Keys → secret key | Yes |
 | `NEXT_PUBLIC_CLARITY_PROJECT_ID` | Clarity → Settings → Overview | No |
 | `NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION` | Only if Search Console is verified by HTML tag instead of DNS | No |
-8. Launch checklist testing
+8. ✅ Launch QA pass (22 Oct): public pages checked for console errors, phone overflow, broken links and axe accessibility (serious/critical); fixed a request-time date bug on /comparisons/new. Also: 404/error pages, PostHog funnel events (active once `NEXT_PUBLIC_POSTHOG_KEY` is set), share-card images, homepage structured data, `/llms.txt`, self-serve data export (`/account/export`) and account deletion on the Company page
 
 ## Later (out of v1 scope)
 

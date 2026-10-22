@@ -54,8 +54,9 @@ export default function PrivacyPage() {
 
       <h2>Your choices</h2>
       <p>
-        You can update your company details at any time. To get a copy of your data or delete your account and everything
-        in it, email the address below and we&rsquo;ll do it within 30 days.
+        You can update your company details at any time. On the Company page you can download a copy of all your data, or
+        delete your account and everything in it straight away. You can also email the address below and we&rsquo;ll do it
+        within 30 days. Payment records are kept by Dodo Payments as the law requires.
       </p>
 
       <h2>Contact</h2>
