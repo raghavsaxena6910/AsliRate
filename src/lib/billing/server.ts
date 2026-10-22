@@ -87,6 +87,32 @@ export async function saveSubscription(sub: Subscription, eventAt: Date, knownUs
   return "saved";
 }
 
+/** Yes/no checks that each billing setting is present and accepted. Never returns the values. */
+export async function billingHealth() {
+  const out = {
+    environment: dodoEnvironment(),
+    dodo_api_key: false,
+    pro_product_found: false,
+    webhook_key_set: Boolean(process.env.DODO_PAYMENTS_WEBHOOK_KEY),
+    supabase_secret_key: false,
+  };
+  try {
+    const product = await dodo().products.retrieve(process.env.DODO_PRO_PRODUCT_ID ?? "");
+    out.dodo_api_key = true;
+    out.pro_product_found = product.product_id === process.env.DODO_PRO_PRODUCT_ID;
+  } catch (err) {
+    const status = (err as { status?: number }).status;
+    out.dodo_api_key = status === 404; // key accepted, product missing
+  }
+  try {
+    const { error } = await admin().from("subscriptions").select("user_id", { count: "exact", head: true });
+    out.supabase_secret_key = !error;
+  } catch {
+    out.supabase_secret_key = false;
+  }
+  return out;
+}
+
 export type Plan = {
   pro: boolean;
   status: string | null;
