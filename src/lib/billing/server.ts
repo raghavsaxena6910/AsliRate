@@ -1,4 +1,5 @@
 import "server-only";
+import { connection } from "next/server";
 import DodoPayments from "dodopayments";
 import type { Subscription } from "dodopayments/resources/subscriptions";
 import { createClient } from "@/lib/supabase/server";
@@ -119,6 +120,8 @@ export type Plan = {
 
 /** The signed-in user's plan and how many free comparisons they've used this month. */
 export async function getPlan(userId: string): Promise<Plan> {
+  // The free allowance depends on today's date, so this must run at request time.
+  await connection();
   const supabase = await createClient();
   const [{ data: sub }, { count }] = await Promise.all([
     supabase

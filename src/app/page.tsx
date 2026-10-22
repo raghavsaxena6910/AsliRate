@@ -133,12 +133,12 @@ export default function Home() {
                 Every supplier quotes in their own format. AsliRate puts them on the same basis before comparing.
               </p>
             </div>
-            <dl className="mt-10 grid gap-px overflow-hidden rounded-2xl border border-line bg-line sm:grid-cols-2 lg:grid-cols-3">
+            <div className="mt-10 grid gap-px overflow-hidden rounded-2xl border border-line bg-line sm:grid-cols-2 lg:grid-cols-3">
               {LEAVES_OUT.map((c) => (
-                <div key={c.term} className="bg-white p-6">
+                <dl key={c.term} className="bg-white p-6">
                   <dt className="font-bold text-ink">{c.term}</dt>
                   <dd className="mt-2 leading-relaxed text-ink-2">{c.detail}</dd>
-                </div>
+                </dl>
               ))}
               <div className="flex flex-col justify-between gap-4 bg-ink p-6 text-white">
                 <p className="text-lg leading-snug font-semibold">See all five at work on three sample quotes.</p>
@@ -146,7 +146,7 @@ export default function Home() {
                   Open the demo
                 </Link>
               </div>
-            </dl>
+            </div>
           </div>
         </Layer>
 

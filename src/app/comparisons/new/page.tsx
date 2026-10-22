@@ -34,9 +34,8 @@ export default function NewComparisonPage() {
 
 async function FormLoader() {
   const user = await requireUser("/comparisons/new");
-  const profile = await getProfile(user.id);
+  const [profile, plan] = await Promise.all([getProfile(user.id), getPlan(user.id)]);
   if (!profile?.onboarded_at) redirect("/onboarding");
-  const plan = await getPlan(user.id);
   if (!plan.pro && plan.used >= plan.limit) return <LimitReached />;
   return <NewComparisonForm gstRegistered={profile.gst_registered} />;
 }

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Suspense } from "react";
+import { connection } from "next/server";
 import { Check } from "lucide-react";
 import { AppHeader } from "@/components/site/app-header";
 import { SiteFooter } from "@/components/site/site-chrome";
@@ -35,6 +36,7 @@ const fmtDate = (iso: string | null) =>
   iso ? new Date(iso).toLocaleDateString("en-IN", { day: "numeric", month: "long", year: "numeric", timeZone: "Asia/Kolkata" }) : null;
 
 async function Billing({ searchParams }: { searchParams: Search }) {
+  await connection();
   const user = await requireUser("/billing");
   const params = await searchParams;
 
