@@ -25,6 +25,9 @@ export function SiteHeader({ showDemoCta = true }: { showDemoCta?: boolean }) {
           <Button asChild variant="ghost" size="sm" className="hidden sm:inline-flex">
             <Link href="/#how-it-works">How it works</Link>
           </Button>
+          <Button asChild variant="ghost" size="sm" className="hidden md:inline-flex">
+            <Link href="/blog">Guides</Link>
+          </Button>
           <Button asChild variant="ghost" size="sm">
             <Link href="/pricing">Pricing</Link>
           </Button>
@@ -59,6 +62,12 @@ export function SiteFooter() {
           </Link>
           <Link href="/pricing" className="hover:text-ink">
             Pricing
+          </Link>
+          <Link href="/blog" className="hover:text-ink">
+            Guides
+          </Link>
+          <Link href="/tools/landed-cost-calculator" className="hover:text-ink">
+            Calculator
           </Link>
           <Link href="/privacy" className="hover:text-ink">
             Privacy

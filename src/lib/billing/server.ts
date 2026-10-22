@@ -133,7 +133,7 @@ export async function getPlan(userId: string): Promise<Plan> {
       .eq("user_id", userId)
       .maybeSingle<SubscriptionRow>(),
     supabase
-      .from("results")
+      .from("comparison_runs")
       .select("id", { count: "exact", head: true })
       .eq("user_id", userId)
       .gte("created_at", monthStartInIndia().toISOString()),

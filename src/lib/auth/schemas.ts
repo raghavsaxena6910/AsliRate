@@ -27,6 +27,17 @@ export const BUY_CATEGORIES = [
   "Services",
 ] as const;
 
+export const HEARD_FROM = [
+  ["google", "Google search"],
+  ["linkedin", "LinkedIn"],
+  ["whatsapp", "WhatsApp group"],
+  ["friend", "A friend or colleague"],
+  ["ca", "My CA or accountant"],
+  ["class", "Masters' Union"],
+  ["other", "Somewhere else"],
+] as const;
+export type HeardFrom = (typeof HEARD_FROM)[number][0];
+
 export const profileSchema = z
   .object({
     company_name: z.string().trim().min(1, "Enter your company name.").max(120),
@@ -41,6 +52,10 @@ export const profileSchema = z
       .transform((v) => Number(v.replace("%", "")))
       .pipe(z.number({ error: "Enter a percentage." }).min(0, "Enter 0 to 60.").max(60, "Enter 0 to 60.")),
     default_priority: z.enum(PRIORITIES),
+    heard_from: z
+      .enum(HEARD_FROM.map(([v]) => v) as [HeardFrom, ...HeardFrom[]])
+      .nullable()
+      .catch(null),
   })
   .superRefine((v, ctx) => {
     if (v.gst_registered && v.gstin && !gstinState(v.gstin)) {

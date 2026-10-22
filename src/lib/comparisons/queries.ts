@@ -18,6 +18,7 @@ export interface ComparisonRow {
   buyer_gst_registered: boolean;
   status: ComparisonStatus;
   created_at: string;
+  share_token: string | null;
 }
 
 export interface QuoteRow {
@@ -40,7 +41,7 @@ export async function getComparison(rawId: string): Promise<ComparisonRow> {
   const supabase = await createClient();
   const { data, error } = await supabase
     .from("comparisons")
-    .select("id, item_description, specification, unit, qty_needed, required_by, deliver_to, buyer_gst_registered, status, created_at")
+    .select("id, item_description, specification, unit, qty_needed, required_by, deliver_to, buyer_gst_registered, status, created_at, share_token")
     .eq("id", id.data)
     .maybeSingle();
   if (error) throw new Error(`Could not load comparison: ${error.message}`);

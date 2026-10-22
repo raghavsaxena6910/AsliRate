@@ -2,7 +2,7 @@
 
 import { useActionState, useState } from "react";
 import { saveProfile, type FormState } from "@/lib/auth/actions";
-import { BUSINESS_TYPES, BUY_CATEGORIES } from "@/lib/auth/schemas";
+import { BUSINESS_TYPES, BUY_CATEGORIES, HEARD_FROM } from "@/lib/auth/schemas";
 import type { Profile } from "@/lib/auth/dal";
 import { gstinState, normaliseGstin } from "@/lib/gst";
 import { Field, fieldProps, FormMessage } from "@/components/forms/field";
@@ -141,6 +141,22 @@ export function ProfileForm({ profile, firstTime }: { profile: Profile; firstTim
         </div>
         <p className="mt-2 text-[12.5px] text-ink-3">You can change this for each comparison.</p>
       </fieldset>
+
+      <Field id="heard_from" label="How did you hear about AsliRate? (optional)">
+        <select
+          id="heard_from"
+          name="heard_from"
+          defaultValue={profile.heard_from ?? ""}
+          className="h-10 w-full max-w-sm rounded-md border border-input bg-white px-3 text-[15px] text-ink"
+        >
+          <option value="">Choose one</option>
+          {HEARD_FROM.map(([value, label]) => (
+            <option key={value} value={value}>
+              {label}
+            </option>
+          ))}
+        </select>
+      </Field>
 
       <div>
         <Button type="submit" size="lg" disabled={pending}>

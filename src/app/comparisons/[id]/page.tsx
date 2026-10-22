@@ -5,6 +5,7 @@ import { redirect } from "next/navigation";
 import { ComparisonSummary } from "@/components/comparisons/comparison-summary";
 import { StepBar } from "@/components/comparisons/step-bar";
 import { ResultsView } from "@/components/results/results-view";
+import { ResultActions } from "@/components/results/result-actions";
 import { AppHeader } from "@/components/site/app-header";
 import { SiteFooter } from "@/components/site/site-chrome";
 import { Button } from "@/components/ui/button";
@@ -59,7 +60,7 @@ async function Results({ params }: { params: Promise<{ id: string }> }) {
           <p className="text-sm text-ink-3">Compared on {formatDate(result.input.as_of)}</p>
           <h1 className="text-[2rem] leading-tight font-bold tracking-[-0.02em] text-ink">Results</h1>
         </div>
-        <div className="flex flex-wrap gap-2">
+        <div className="flex flex-wrap gap-2 print:hidden">
           <Button asChild variant="outline" size="sm">
             <Link href={`/comparisons/${comparison.id}/review`}>Edit the numbers</Link>
           </Button>
@@ -70,7 +71,10 @@ async function Results({ params }: { params: Promise<{ id: string }> }) {
       </div>
       <ComparisonSummary comparison={comparison} className="mb-10" />
       <ResultsView result={result} rationale={saved.rationale ?? undefined} />
-      <div className="mt-12 flex flex-wrap gap-3 border-t border-line pt-8">
+      <div className="mt-12">
+        <ResultActions comparisonId={comparison.id} initialToken={comparison.share_token} />
+      </div>
+      <div className="mt-12 flex flex-wrap gap-3 border-t border-line pt-8 print:hidden">
         <Button asChild>
           <Link href="/comparisons/new">New comparison</Link>
         </Button>

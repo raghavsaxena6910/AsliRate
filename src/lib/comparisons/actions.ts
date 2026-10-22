@@ -256,3 +256,38 @@ export async function confirmAndCompare(comparisonId: string, rawForms: unknown)
   revalidatePath(`/comparisons/${comparisonId}`, "layout");
   redirect(`/comparisons/${comparisonId}`);
 }
+
+/* ---------------- share and delete ---------------- */
+
+export type ShareResult = { ok: true; token: string | null } | { ok: false; message: string };
+
+/** Turn a read-only share link on (new random token) or off. */
+export async function setSharing(comparisonId: string, on: boolean): Promise<ShareResult> {
+  if (!uuid.safeParse(comparisonId).success) return { ok: false, message: "Comparison not found." };
+  const { supabase } = await session();
+  const { randomBytes } = await import("node:crypto");
+  const token = on ? randomBytes(16).toString("base64url") : null;
+  const { data, error } = await supabase
+    .from("comparisons")
+    .update({ share_token: token })
+    .eq("id", comparisonId)
+    .eq("status", "complete")
+    .select("id")
+    .maybeSingle();
+  if (error || !data) return { ok: false, message: "We couldn't change sharing. Try again." };
+  revalidatePath(`/comparisons/${comparisonId}`);
+  return { ok: true, token };
+}
+
+/** Delete a comparison, its quotes, results and uploaded files. */
+export async function deleteComparison(comparisonId: string): Promise<ActionResult> {
+  if (!uuid.safeParse(comparisonId).success) return { ok: false, message: "Comparison not found." };
+  const { supabase } = await session();
+  const { data: quotes } = await supabase.from("quotes").select("file_path").eq("comparison_id", comparisonId);
+  const { data, error } = await supabase.from("comparisons").delete().eq("id", comparisonId).select("id").maybeSingle();
+  if (error || !data) return { ok: false, message: "We couldn't delete that comparison. Try again." };
+  const paths = (quotes ?? []).map((q) => q.file_path).filter((p): p is string => Boolean(p));
+  if (paths.length) await supabase.storage.from("quotes").remove(paths);
+  revalidatePath("/dashboard");
+  return { ok: true };
+}

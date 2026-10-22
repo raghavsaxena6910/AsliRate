@@ -34,6 +34,7 @@ export type Profile = {
   cost_of_funds_pct: number;
   default_priority: "cost" | "balanced" | "speed";
   onboarded_at: string | null;
+  heard_from: string | null;
 };
 
 export async function getProfile(userId: string): Promise<Profile | null> {
@@ -41,7 +42,7 @@ export async function getProfile(userId: string): Promise<Profile | null> {
   const { data, error } = await supabase
     .from("profiles")
     .select(
-      "id, full_name, company_name, gstin, gst_registered, state_code, business_type, city, usually_buys, cost_of_funds_pct, default_priority, onboarded_at",
+      "id, full_name, company_name, gstin, gst_registered, state_code, business_type, city, usually_buys, cost_of_funds_pct, default_priority, onboarded_at, heard_from",
     )
     .eq("id", userId)
     .maybeSingle();

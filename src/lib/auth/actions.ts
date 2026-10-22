@@ -81,6 +81,7 @@ export async function saveProfile(_prev: FormState, formData: FormData): Promise
     usually_buys: formData.getAll("usually_buys"),
     cost_of_funds_pct: formData.get("cost_of_funds_pct") ?? "",
     default_priority: formData.get("default_priority") ?? "balanced",
+    heard_from: formData.get("heard_from") || null,
   });
   if (!parsed.success) return { errors: fieldErrors(parsed.error), values };
 

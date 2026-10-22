@@ -11,6 +11,7 @@ import { createClient } from "@/lib/supabase/server";
 import { formatQty, toMilli } from "@/lib/engine/money";
 import { getPlan } from "@/lib/billing/server";
 import { PlanStrip } from "@/components/billing/plan-strip";
+import { DeleteRowButton } from "@/components/comparisons/delete-row-button";
 import { nextPathFor, type ComparisonStatus } from "@/lib/comparisons/schemas";
 
 const STATUS: Record<ComparisonStatus, { label: string; tone: string }> = {
@@ -94,6 +95,7 @@ async function Dashboard() {
               <span className={`rounded-full px-3 py-1 text-[13px] font-semibold ${STATUS[c.status as ComparisonStatus]?.tone ?? ""}`}>
                 {STATUS[c.status as ComparisonStatus]?.label ?? c.status}
               </span>
+              <DeleteRowButton id={c.id} label={c.item_description} />
             </li>
           ))}
         </ul>
