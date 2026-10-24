@@ -6,7 +6,7 @@ import Script from "next/script";
  * to override. Signed-in pages carry data-clarity-mask="true", so Clarity
  * hides quotes, prices and company details there.
  */
-const CLARITY_PROJECT_ID = process.env.NEXT_PUBLIC_CLARITY_PROJECT_ID ?? "";
+const CLARITY_PROJECT_ID = process.env.NEXT_PUBLIC_CLARITY_PROJECT_ID ?? "z2pypmy99p";
 
 export function Clarity() {
   if (!/^[a-z0-9]{6,20}$/i.test(CLARITY_PROJECT_ID)) return null;
