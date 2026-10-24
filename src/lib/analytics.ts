@@ -4,8 +4,9 @@ import posthog from "posthog-js";
  * PostHog settings. The project key (phc_…) is public by design; a personal
  * key (phx_…) must never be used here.
  */
-export const POSTHOG_KEY = process.env.NEXT_PUBLIC_POSTHOG_KEY ?? "";
-export const POSTHOG_REGION = process.env.NEXT_PUBLIC_POSTHOG_REGION === "eu" ? "eu" : "us";
+export const POSTHOG_KEY = process.env.NEXT_PUBLIC_POSTHOG_KEY ?? "phc_BY8VS8JNrgPDcivKZWoKTjRCPeqRwaoFxKPRpij5jszi";
+// The AsliRate PostHog project lives in the EU region.
+export const POSTHOG_REGION = process.env.NEXT_PUBLIC_POSTHOG_REGION === "us" ? "us" : "eu";
 export const analyticsEnabled = POSTHOG_KEY.startsWith("phc_");
 
 /** Product events we care about for the funnel. */

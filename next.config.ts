@@ -1,8 +1,8 @@
 import type { NextConfig } from "next";
 
-// PostHog region: "us" (default) or "eu". Analytics is proxied through /ingest
-// on our own domain so ad blockers don't drop it.
-const region = process.env.NEXT_PUBLIC_POSTHOG_REGION === "eu" ? "eu" : "us";
+// PostHog region: "eu" (AsliRate's project) unless overridden with "us". Analytics is
+// proxied through /ingest on our own domain so ad blockers don't drop it.
+const region = process.env.NEXT_PUBLIC_POSTHOG_REGION === "us" ? "us" : "eu";
 
 const nextConfig: NextConfig = {
   cacheComponents: true,
